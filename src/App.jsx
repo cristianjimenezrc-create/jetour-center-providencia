@@ -1,44 +1,208 @@
-import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
+import { Link, Route, Routes } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, BadgeCheck, Car, Check, CircleDollarSign, Compass, Gauge, MapPin, Phone, ShieldCheck, Sparkles, Users, Zap } from 'lucide-react'
+import { ArrowRight, CalendarDays, Car, Check, CircleDollarSign, Clock, Compass, Instagram, Mail, MapPin, Menu, Phone, Scale, ShieldCheck, Sparkles, Star, Users, WalletCards, Zap } from 'lucide-react'
 
 const WSP = '56945055463'
-const RED = '#D71F2E'
 
 const models = [
-  { slug:'x50', name:'X50', type:'SUV urbano', mood:'city', source:'Ficha técnica oficial X50', warranty:'5 años / 150.000 km', headline:'La entrada inteligente al mundo SUV Jetour.', summary:'Compacto, conectado y muy cómodo para la ciudad. El X50 es ideal para quien busca su primer SUV con diseño moderno, buena habitabilidad y una relación equipamiento/valor muy atractiva.', ideal:['Primer SUV','Uso urbano en Santiago','Clientes que buscan diseño y tecnología sin subir de segmento'], colors:['Blanco','Gris','Negro'], specs:{motor:'1.5L 111 hp o 1.5T 154 hp', torque:'143 Nm o 230 Nm', transmision:'5MT o 6DCT', dimensiones:'4.397 x 1.841 x 1.654 mm', pasajeros:'5', estanque:'45 L', maletero:'398 / 1.262 L'}, highlights:['Apple CarPlay y Android Auto inalámbricos','Doble pantalla de 10,25”','Tapiz eco-cuero','Sunroof eléctrico según versión','Luces LED según versión'] },
-  { slug:'new-x70', name:'New X70', type:'SUV familiar 7 pasajeros', mood:'family', source:'Ficha técnica oficial New X70', warranty:'5 años / 150.000 km', headline:'Más espacio para viajar con todos.', summary:'Un SUV de 7 pasajeros pensado para familias que necesitan comodidad, capacidad y versatilidad sin perder diseño ni tecnología.', ideal:['Familias grandes','Viajes de fin de semana','Clientes que necesitan 7 asientos'], colors:['Blanco','Gris','Negro'], specs:{motor:'1.5 Turbo 145 hp', torque:'210 Nm', transmision:'6MT o 6DCT', dimensiones:'4.743 x 1.900 x 1.720 mm', pasajeros:'7', estanque:'57 L', maletero:'89 / 1.680 L'}, highlights:['Panel de instrumentos 12,3”','Radio touch 10,25”','Sunroof panorámico según versión','Cámara 360 HD según versión','Portalón eléctrico según versión'] },
-  { slug:'x70-plus', name:'X70 Plus', type:'SUV familiar premium', mood:'premium', source:'Ficha técnica oficial X70 Plus', warranty:'5 años / 150.000 km', headline:'Elegancia familiar con presencia superior.', summary:'El X70 Plus eleva la experiencia familiar con una silueta más premium, 7 pasajeros, buen espacio interior y equipamiento de alto valor.', ideal:['Familias que buscan más categoría','Clientes que comparan SUV de 7 pasajeros','Uso ciudad-carretera'], colors:['Blanco','Gris','Negro'], specs:{motor:'1.5T 145 hp o 1.6T GDI 188 hp', torque:'210 / 275 Nm', transmision:'DCT 6 o 7 velocidades', dimensiones:'4.724 x 1.900 x 1.720 mm', pasajeros:'7', estanque:'57 L', maletero:'94 / 1.688 L'}, highlights:['Neumáticos 255/45 R20','Sunroof panorámico','Cámara 360 HD','Portalón eléctrico','CarPlay / Android Auto inalámbrico'] },
-  { slug:'dashing', name:'Dashing', type:'SUV deportivo futurista', mood:'night', source:'Ficha técnica oficial Dashing', warranty:'5 años / 150.000 km', headline:'Diseño protagonista, tecnología y carácter deportivo.', summary:'El Dashing está creado para llamar la atención. Combina líneas futuristas, cabina digital y una propuesta tecnológica muy potente para quienes quieren un SUV diferente.', ideal:['Profesionales jóvenes','Clientes que valoran diseño','Uso ciudad y carretera'], colors:['Rojo','Blanco','Gris','Negro'], specs:{motor:'1.5T 145 hp o 1.6T GDI 188 hp', torque:'210 / 275 Nm', transmision:'6MT, 6DCT o 7DCT', dimensiones:'4.590 x 1.900 x 1.685 mm', pasajeros:'5', estanque:'57 L', maletero:'486 / 977 L'}, highlights:['Pantalla 12,8” o 15,6”','Parlantes Sony según versión','Cámara 360°','Chasis transparente 180° según versión','ADAS según versión'] },
-  { slug:'x90-plus', name:'X90 Plus', type:'SUV ejecutivo 7 pasajeros', mood:'executive', source:'Ficha técnica oficial X90 Plus', warranty:'Información según versión', headline:'Un SUV ejecutivo para viajar en grande.', summary:'El X90 Plus es la alternativa más ejecutiva de la gama familiar: 7 pasajeros, motor 2.0TGDI, gran distancia entre ejes y equipamiento de confort superior.', ideal:['Familias ejecutivas','Viajes largos','Clientes que buscan máximo espacio'], colors:['Azul','Blanco','Gris','Negro'], specs:{motor:'2.0TGDI 241 hp', torque:'390 Nm', transmision:'7DCT doble embrague', dimensiones:'4.858 x 1.925 x 1.780 mm', pasajeros:'7', estanque:'57 L', maletero:'104 / 1.052 L'}, highlights:['Doble pantalla 12,3”','Pantalla climatización 9,7”','Sistema de audio Sony','Cámara 360 HD y chasis transparente','ACC, AEB, BSD, LKA, TJA'] },
-  { slug:'t1-gasolina', name:'T1 Gasolina', type:'SUV aventura', mood:'adventure', source:'Ficha técnica oficial T1 Gasolina', warranty:'7 años / 200.000 km', headline:'Diseño outdoor para despertar tu lado aventurero.', summary:'El T1 combina estética robusta, buen despeje, gran maletero y versiones pensadas tanto para ciudad como para caminos más exigentes.', ideal:['Clientes outdoor','Viajes al sur o playa','Quienes quieren un SUV distinto'], colors:['Blanco','Dorado','Verde mate','Gris','Negro'], specs:{motor:'1.5T 167 hp o 2.0T 241 hp', torque:'290 / 390 Nm', transmision:'7DCT 4x2 o 8AT XWD', dimensiones:'4.705 x 1.967 x 1.843 mm', pasajeros:'5', estanque:'70 L', maletero:'574 / 1.455 L'}, highlights:['Despeje 190 mm','Modos Eco, Normal, Sport y off-road según versión','XWD en versión 2.0T','Apple CarPlay / Android Auto inalámbricos','Reposabrazos refrigerado según versión'] },
-  { slug:'t1-phev', name:'T1 PHEV', type:'SUV híbrido enchufable', mood:'eco', source:'Ficha técnica oficial T1 PHEV', warranty:'7 años / 200.000 km', headline:'Aventura híbrida enchufable con gran autonomía.', summary:'El T1 PHEV suma eficiencia eléctrica, potencia combinada y autonomía para viajes largos con una imagen outdoor muy atractiva.', ideal:['Clientes que quieren eficiencia','Viajes largos','Aventura con tecnología híbrida'], colors:['Blanco','Dorado','Verde mate','Gris','Negro'], specs:{motor:'1.5T PHEV', torque:'525 Nm combinado', transmision:'DHT 4x2', dimensiones:'4.705 x 1.967 x 1.843 mm', pasajeros:'5', estanque:'70 L', maletero:'574 L'}, highlights:['341 hp combinados','Autonomía combinada +1.000 km','Batería 26,7 kWh LiFePO4','117 km de autonomía eléctrica','Carga rápida 30%-80% en 0,5 h'] },
-  { slug:'t2-gasolina', name:'T2 Gasolina', type:'Off-road premium', mood:'offroad', source:'Ficha técnica oficial T2 Gasolina', warranty:'7 años / 200.000 km', headline:'Presencia off-road con tecnología premium.', summary:'El T2 Gasolina es un SUV imponente, con tracción AWD, ángulos todoterreno y una estética que lo hace destacar en cualquier camino.', ideal:['Aventura premium','Montaña, campo y viajes','Clientes que buscan presencia'], colors:['Gris','Negro','Verde','Blanco'], specs:{motor:'2.0T GDI 241 hp', torque:'390 Nm', transmision:'7DCT AWD', dimensiones:'4.785 x 2.006 x 1.880 mm', pasajeros:'5', estanque:'70 L', maletero:'580 / 1.494 L'}, highlights:['Despeje 220 mm','Ángulo ataque 28° y salida 30°','Modos Sport, Eco, Normal, Nieve, Roca, Sedimento e Intelligent X','Diferencial trasero con bloqueo según ficha','Cámara 360 y chasis transparente según versión'] },
-  { slug:'t2-phev', name:'T2 PHEV', type:'Híbrido enchufable premium', mood:'phev', source:'Ficha técnica oficial T2 PHEV', warranty:'7 años / 200.000 km motor combustión / 8 años o 150.000 km motor eléctrico', headline:'Potencia híbrida enchufable para ir más allá.', summary:'El T2 PHEV une la presencia del T2 con tecnología híbrida enchufable, gran torque y autonomía combinada para viajes largos.', ideal:['Clientes tecnológicos','Viajes largos con eficiencia','Aventura premium híbrida'], colors:['Gris','Negro','Verde','Blanco'], specs:{motor:'1.5 Turbo + 2 motores eléctricos', torque:'610 Nm combinado', transmision:'DHT 3 4x2', dimensiones:'4.785 x 2.006 x 1.880 mm', pasajeros:'5', estanque:'70 L', maletero:'580 / 1.494 L'}, highlights:['375 hp combinados','610 Nm combinados','139 km de autonomía eléctrica','+1.000 km autonomía combinada','Carga rápida 30 min 30%-80%'] }
+  { slug: 'x50', name: 'X50', type: 'SUV Urbano', tone: 'white', headline: 'Compacto, moderno e ideal para Santiago.', power: '1.5L / 1.5T', seats: '5', tag: 'Ciudad' },
+  { slug: 'x70-plus', name: 'X70 PLUS', type: 'SUV Familiar', tone: 'graphite', headline: 'Más espacio, confort y presencia familiar.', power: '1.5T / 1.6T', seats: '7', tag: 'Familia' },
+  { slug: 'dashing', name: 'DASHING', type: 'SUV Deportivo', tone: 'red', headline: 'Diseño futurista para destacar.', power: '1.5T / 1.6T', seats: '5', tag: 'Diseño' },
+  { slug: 't1', name: 'T1', type: 'SUV Adventure', tone: 'green', headline: 'Robusto, outdoor y preparado para salir.', power: '1.5T / 2.0T', seats: '5', tag: 'Adventure' },
+  { slug: 't2', name: 'T2', type: 'Off Road Premium', tone: 'black', headline: 'Presencia todoterreno con tecnología premium.', power: '2.0T / PHEV', seats: '5', tag: 'Premium' }
 ]
 
 const benefits = [
-  ['Respaldo', 'Atención directa de Guillermo Morales en Providencia.', BadgeCheck],
-  ['Financiamiento', 'Evaluación, crédito y alternativas según perfil.', CircleDollarSign],
-  ['Toma de usado', 'Renueva tu vehículo actual y úsalo como parte del proceso.', Car],
-  ['Test Drive', 'Coordina una experiencia de manejo con Cristián.', Compass],
-  ['Tecnología', 'Conectividad, pantallas y asistencias según versión.', Zap],
-  ['Seguridad', 'Equipamiento activo y pasivo para viajar con confianza.', ShieldCheck]
+  { title: 'Diseño', text: 'Líneas modernas, presencia premium y una identidad SUV pensada para destacar.', icon: Star },
+  { title: 'Tecnología', text: 'Pantallas digitales, conectividad, cámara 360° y asistencias según versión.', icon: Zap },
+  { title: 'Seguridad', text: 'Equipamiento activo y pasivo para viajar con confianza todos los días.', icon: ShieldCheck },
+  { title: 'Garantía', text: 'Respaldo de marca y atención directa en Guillermo Morales Bilbao.', icon: Sparkles }
 ]
 
-function wsp(message='Hola Cristián, quiero cotizar un Jetour.') { return `https://wa.me/${WSP}?text=${encodeURIComponent(message)}` }
-function Header(){ return <header className="nav"><Link to="/" className="brand"><span>JETOUR</span><small>Center Providencia</small></Link><nav><NavLink to="/modelos">Modelos</NavLink><NavLink to="/financiamiento">Financiamiento</NavLink><NavLink to="/test-drive">Test Drive</NavLink><NavLink to="/contacto">Contacto</NavLink></nav><a className="nav-cta" href={wsp()} target="_blank">WhatsApp</a></header> }
-function Visual({model={mood:'hero',accent:RED}, large=false}){ return <div className={`visual ${model.mood||'hero'} ${large?'large':''}`} style={{'--accent':model.accent||RED}}><div className="visual-copy"><strong>{model.name||'JETOUR'}</strong><small>{model.source||'Visual oficial referencial'}</small></div><div className="sun"/><div className="mountain m1"/><div className="mountain m2"/><div className="road"/><div className="suv"><div className="roof"/><div className="body"/><div className="light l1"/><div className="light l2"/><div className="wheel w1"/><div className="wheel w2"/></div><span>Visual editorial inspirado en ficha oficial · reemplazable por foto HD</span></div> }
-function ModelCard({m}){ return <Link to={`/modelos/${m.slug}`} className="model-card"><Visual model={m}/><div><p>{m.type}</p><h3>{m.name}</h3><span>Explorar modelo <ArrowRight size={16}/></span></div></Link> }
-function Metric({icon:Icon,label,value}){ return <div className="metric"><Icon size={22}/><small>{label}</small><strong>{value}</strong></div> }
-function CTA({model}){ const msg=model?`Hola Cristián, quiero cotizar el Jetour ${model.name}.`:'Hola Cristián, quiero cotizar un Jetour.'; return <section className="cta-panel"><div><p className="eyebrow">Atención directa</p><h2>Agenda, cotiza o evalúa financiamiento con un asesor Jetour.</h2><p>Cristián Jiménez · Ejecutivo de Ventas Jetour · Guillermo Morales Bilbao, Providencia.</p></div><div className="cta-actions"><a className="btn primary" href={wsp(msg)} target="_blank">Cotizar por WhatsApp</a><Link className="btn ghost" to="/test-drive">Agendar Test Drive</Link></div></section> }
-function Home(){ return <main><section className="hero"><motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:.8}} className="hero-copy"><p className="eyebrow">Powered by Guillermo Morales</p><h1>Jetour Center Providencia</h1><p className="lead">SUV con diseño, tecnología y aventura para quienes buscan más. Cotiza, compara y agenda tu test drive con atención directa en Bilbao, Providencia.</p><div className="hero-actions"><a className="btn primary" href={wsp()} target="_blank">Cotizar ahora</a><Link className="btn secondary" to="/modelos">Ver modelos</Link></div></motion.div><motion.div initial={{opacity:0,scale:.96}} animate={{opacity:1,scale:1}} transition={{duration:1,delay:.15}}><Visual model={models.find(m=>m.slug==='t2-phev')} large/></motion.div></section><section className="section"><p className="eyebrow">Gama Jetour</p><div className="section-head"><h2>Elige el SUV que conecta con tu estilo de vida.</h2><Link to="/modelos">Ver todos</Link></div><div className="grid models">{models.map(m=><ModelCard key={m.slug} m={m}/>)}</div></section><section className="section dark"><p className="eyebrow">Por qué Jetour</p><div className="feature-grid">{benefits.map(([t,b,Icon])=><article className="feature" key={t}><Icon/><h3>{t}</h3><p>{b}</p></article>)}</div></section><section className="section compare"><p className="eyebrow">Comparador rápido</p><h2>Datos clave de la gama.</h2><div className="compare-table"><div><b>Modelo</b><b>Motor / potencia</b><b>Pasajeros</b><b>Maletero</b><b>Garantía</b></div>{models.map(m=><div key={m.slug}><span>{m.name}</span><span>{m.specs.motor}</span><span>{m.specs.pasajeros}</span><span>{m.specs.maletero}</span><span>{m.warranty}</span></div>)}</div></section><CTA/></main> }
-function Models(){ return <main className="page"><section className="page-hero compact"><p className="eyebrow">Modelos</p><h1>Una gama para cada tipo de cliente.</h1><p>Compara diseño, espacio, tecnología, autonomía y enfoque comercial.</p></section><section className="section"><div className="grid models">{models.map(m=><ModelCard key={m.slug} m={m}/>)}</div></section></main> }
-function ModelPage(){ const {slug}=useParams(); const model=models.find(m=>m.slug===slug)||models[0]; const specList=Object.entries(model.specs); return <main className="page"><section className="model-hero"><div><p className="eyebrow">{model.type}</p><h1>Jetour {model.name}</h1><p className="lead">{model.headline}</p><p>{model.summary}</p><div className="hero-actions"><a className="btn primary" href={wsp(`Hola Cristián, quiero cotizar el Jetour ${model.name}.`)} target="_blank">Cotizar {model.name}</a><Link className="btn secondary" to="/test-drive">Agendar Test Drive</Link></div></div><Visual model={model} large/></section><section className="section metric-grid"><Metric icon={Gauge} label="Motor" value={model.specs.motor}/><Metric icon={Zap} label="Torque" value={model.specs.torque}/><Metric icon={Users} label="Pasajeros" value={model.specs.pasajeros}/><Metric icon={Car} label="Maletero" value={model.specs.maletero}/></section><section className="split"><div><p className="eyebrow">Descripción comercial</p><h2>{model.headline}</h2><p>{model.summary}</p><p><strong>Fuente integrada:</strong> {model.source}</p><p><strong>Garantía:</strong> {model.warranty}</p></div><div className="highlight-list">{model.highlights.map(h=><div key={h}><Check size={18}/><span>{h}</span></div>)}</div></section><section className="section"><p className="eyebrow">Ficha técnica integrada</p><h2>Datos principales</h2><div className="tech-table">{specList.map(([l,v])=><div key={l}><span>{l}</span><strong>{v}</strong></div>)}</div><p className="note">Información referencial según versión y disponibilidad. Consulte con su asesor antes de la compra.</p></section><section className="section"><p className="eyebrow">Ideal para</p><div className="cards-3">{model.ideal.map(i=><article className="feature big" key={i}><Sparkles/><h3>{i}</h3><p>Recomendación comercial para orientar al cliente según su uso real.</p></article>)}</div></section><section className="section"><p className="eyebrow">Colores referenciales</p><div className="swatches">{model.colors.map(c=><span key={c}>{c}</span>)}</div></section><section className="section"><p className="eyebrow">Galería contextual</p><div className="gallery"><Visual model={model}/><Visual model={{...model,mood:'interior',source:'Interior'}}/><Visual model={{...model,mood:'detail',source:'Equipamiento'}}/><Visual model={{...model,mood:'roadtrip',source:'Uso real'}}/></div></section><CTA model={model}/></main> }
-function Lead({title,message,finance=false}){ return <section className="lead-form"><div><p className="eyebrow">Formulario rápido</p><h2>{title}</h2><p>{finance?'Para una preevaluación más precisa, necesitamos RUT, renta líquida promedio y monto máximo de pie disponible. También puedes escribir directo por WhatsApp.':'Completa tus datos o escríbeme directo por WhatsApp para una respuesta más rápida.'}</p>{finance&&<p className="note">Datos solicitados solo para orientar la evaluación comercial. La aprobación final depende de la entidad financiera y antecedentes del cliente.</p>}</div><form onSubmit={(e)=>{e.preventDefault(); const data=new FormData(e.currentTarget); const details=[`Nombre: ${data.get('nombre')||''}`,`Teléfono: ${data.get('telefono')||''}`,`Modelo: ${data.get('modelo')||''}`,finance?`RUT: ${data.get('rut')||''}`:null,finance?`Renta líquida promedio: ${data.get('renta')||''}`:null,finance?`Pie máximo disponible: ${data.get('pie')||''}`:null,`Mensaje: ${data.get('mensaje')||''}`].filter(Boolean).join('\n'); window.open(wsp(`${message}\n\n${details}`),'_blank')}}><input name="nombre" placeholder="Nombre" required/><input name="telefono" placeholder="Teléfono" required/><select name="modelo"><option>Modelo de interés</option>{models.map(m=><option key={m.slug}>{m.name}</option>)}</select>{finance&&<><input name="rut" placeholder="RUT" required/><input name="renta" placeholder="Renta líquida promedio" required/><input name="pie" placeholder="Monto máximo de pie disponible" required/></>}<textarea name="mensaje" placeholder="Mensaje o disponibilidad"/><button className="btn primary" type="submit">Enviar por WhatsApp</button></form></section> }
-function Financing(){ return <main className="page"><section className="page-hero"><p className="eyebrow">Financiamiento</p><h1>Pre-evaluación simple para comprar tu Jetour.</h1><p>Solicita una orientación comercial con datos clave: RUT, renta líquida promedio y monto máximo de pie disponible.</p></section><section className="section cards-3">{['RUT','Renta líquida promedio','Pie máximo disponible'].map((x,i)=><article className="feature big" key={x}><CircleDollarSign/><h3>{x}</h3><p>{['Permite iniciar una orientación comercial y ordenar la solicitud.','Ayuda a estimar capacidad de financiamiento de forma referencial.','Permite calcular alternativas iniciales de pie, saldo y cuota.'][i]}</p></article>)}</section><Lead title="Solicita pre-evaluación de financiamiento" message="Hola Cristián, quiero evaluar financiamiento para un Jetour." finance/></main> }
-function TestDrive(){ return <main className="page"><section className="page-hero"><p className="eyebrow">Test Drive</p><h1>Agenda una experiencia Jetour en Providencia.</h1><p>Elige el modelo de tu interés y coordinemos una visita a sucursal.</p></section><Lead title="Agendar Test Drive" message="Hola Cristián, quiero agendar un test drive Jetour."/></main> }
-function Contact(){ return <main className="page"><section className="page-hero"><p className="eyebrow">Contacto</p><h1>Cristián Jiménez</h1><p>Ejecutivo de Ventas Jetour · Guillermo Morales · Sucursal Bilbao, Providencia.</p><a className="btn primary" href={wsp('Hola Cristián, quiero hablar sobre un Jetour.')} target="_blank">Escribir por WhatsApp</a></section><section className="split"><div><h2>Jetour Center Providencia</h2><p>Atención comercial directa para cotización, financiamiento, toma de usado y test drive.</p><p className="contact-line"><Phone size={18}/> +56 9 4505 5463</p><p className="contact-line"><MapPin size={18}/> Bilbao, Providencia</p></div><div className="map">Mapa referencial · Bilbao, Providencia</div></section></main> }
-function Footer(){ return <footer><div><strong>Jetour Center Providencia</strong><p>Powered by Guillermo Morales · Atención comercial por Cristián Jiménez.</p></div><a href={wsp()} target="_blank">WhatsApp +56 9 4505 5463</a></footer> }
-function WhatsAppButton(){ return <a className="floating-wsp" href={wsp()} target="_blank">WhatsApp</a> }
-export default function App(){ return <><Header/><Routes><Route path="/" element={<Home/>}/><Route path="/modelos" element={<Models/>}/><Route path="/modelos/:slug" element={<ModelPage/>}/><Route path="/financiamiento" element={<Financing/>}/><Route path="/test-drive" element={<TestDrive/>}/><Route path="/contacto" element={<Contact/>}/></Routes><WhatsAppButton/><Footer/></> }
+function wsp(message = 'Hola Cristián, quiero cotizar un Jetour y coordinar una visita a Bilbao.') {
+  return `https://wa.me/${WSP}?text=${encodeURIComponent(message)}`
+}
+
+function Header() {
+  return (
+    <header className="nav">
+      <Link className="brand" to="/">
+        <strong>JETOUR</strong>
+        <span>Drive Your Future</span>
+      </Link>
+      <nav>
+        <a href="#modelos">Modelos</a>
+        <a href="#comparador">Comparador</a>
+        <a href="#financiamiento">Financiamiento</a>
+        <a href="#test-drive">Test Drive</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <div className="nav-actions">
+        <a className="nav-cta" href={wsp()} target="_blank" rel="noreferrer">Cotizar ahora</a>
+        <a className="wsp-mini" href={wsp()} target="_blank" rel="noreferrer"><Phone size={18}/></a>
+        <button className="menu"><Menu size={22}/></button>
+      </div>
+    </header>
+  )
+}
+
+function GeneratedSUV({ tone = 'black', label = 'T2' }) {
+  return (
+    <div className={`suv-scene ${tone}`}>
+      <div className="sky" />
+      <div className="peak peak-a" />
+      <div className="peak peak-b" />
+      <div className="peak peak-c" />
+      <div className="dust dust-a" />
+      <div className="dust dust-b" />
+      <div className="vehicle">
+        <div className="vehicle-roof" />
+        <div className="vehicle-glass" />
+        <div className="vehicle-body" />
+        <div className="vehicle-grille"><span>J E T O U R</span></div>
+        <div className="vehicle-light left" />
+        <div className="vehicle-light right" />
+        <div className="wheel front" />
+        <div className="wheel rear" />
+        <div className="plate">{label}</div>
+      </div>
+    </div>
+  )
+}
+
+function ModelCard({ model, index }) {
+  return (
+    <motion.article className="model-card" initial={{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:index*.05}}>
+      <GeneratedSUV tone={model.tone} label={model.name.replace(' PLUS','')} />
+      <div className="model-copy">
+        <p>{model.tag}</p>
+        <h3>{model.name}</h3>
+        <span>{model.type}</span>
+        <a href={wsp(`Hola Cristián, quiero información del Jetour ${model.name}.`)} target="_blank" rel="noreferrer">Ver modelo <ArrowRight size={16}/></a>
+      </div>
+    </motion.article>
+  )
+}
+
+function Home() {
+  return (
+    <main>
+      <section className="hero" id="inicio">
+        <GeneratedSUV tone="black" label="T2" />
+        <div className="hero-overlay" />
+        <motion.div className="hero-content" initial={{opacity:0,y:26}} animate={{opacity:1,y:0}} transition={{duration:.8}}>
+          <p className="eyebrow">Jetour Center Providencia</p>
+          <h1>Descubre la nueva generación de SUV Premium</h1>
+          <p className="lead">Tecnología, diseño y seguridad para quienes buscan más que un automóvil.</p>
+          <div className="hero-actions">
+            <a className="btn primary" href={wsp()} target="_blank" rel="noreferrer">Cotizar ahora</a>
+            <a className="btn light" href={wsp('Hola Cristián, quiero agendar un test drive Jetour.')} target="_blank" rel="noreferrer"><CalendarDays size={18}/> Agendar Test Drive</a>
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="section white" id="modelos">
+        <p className="section-kicker">Nuestra gama</p>
+        <div className="model-grid">
+          {models.map((model, index) => <ModelCard key={model.name} model={model} index={index}/>) }
+        </div>
+      </section>
+
+      <section className="why">
+        <h2>¿Por qué elegir Jetour?</h2>
+        <div className="why-grid">
+          {benefits.map(({title,text,icon:Icon}) => (
+            <article key={title}>
+              <Icon size={32}/>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="cinematic">
+        <div>
+          <h2>Cada viaje merece un SUV diseñado para sorprender.</h2>
+          <button aria-label="Ver experiencia"><ArrowRight size={24}/></button>
+        </div>
+      </section>
+
+      <section className="compare-strip" id="comparador">
+        <div className="compare-copy">
+          <Scale size={34}/>
+          <h2>¿No sabes cuál Jetour elegir?</h2>
+          <p>Compara toda la gama y encuentra el SUV perfecto para ciudad, familia o aventura.</p>
+          <a className="btn dark" href={wsp('Hola Cristián, quiero comparar modelos Jetour.')} target="_blank" rel="noreferrer">Comparar modelos</a>
+        </div>
+        <div className="lineup">
+          {models.map((model) => <div key={model.name} className={`mini-car ${model.tone}`}><GeneratedSUV tone={model.tone} label={model.name.split(' ')[0]}/></div>)}
+        </div>
+      </section>
+
+      <section className="finance-test" id="financiamiento">
+        <div className="finance-panel">
+          <p className="section-kicker left">Financiamiento hecho para ti</p>
+          <div className="finance-options">
+            <article><WalletCards size={34}/><h3>Crédito</h3><p>Opciones de financiamiento y evaluación según perfil.</p><strong>Hasta 84 meses</strong></article>
+            <article><CircleDollarSign size={34}/><h3>Compra inteligente</h3><ul><li>Bonos</li><li>Toma tu usado</li><li>Leasing</li></ul></article>
+          </div>
+        </div>
+        <div className="test-panel" id="test-drive">
+          <div className="interior-art">
+            <div className="screen"/><div className="wheel-art"/><div className="console"/>
+          </div>
+          <div>
+            <h2>Vive la experiencia antes de decidir.</h2>
+            <a className="btn light" href={wsp('Hola Cristián, quiero reservar un test drive Jetour.')} target="_blank" rel="noreferrer">Contactar asesor</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="location" id="contacto">
+        <div className="dealer-art"><GeneratedSUV tone="black" label="JETOUR" /></div>
+        <div className="dealer-info">
+          <h2>Guillermo Morales – Bilbao</h2>
+          <p><MapPin size={18}/> Av. Francisco Bilbao 2326, Providencia, Santiago</p>
+          <p><Clock size={18}/> Lunes a viernes 09:00 – 19:00 hrs · Sábado 10:00 – 14:00 hrs</p>
+          <p><Phone size={18}/> +56 9 4505 5463</p>
+          <p><Mail size={18}/> cristianjimenezrc@gmail.com</p>
+          <a className="btn dark" href={wsp()} target="_blank" rel="noreferrer">Contactar asesor</a>
+        </div>
+        <div className="map-art"><span>Guillermo Morales Bilbao</span></div>
+      </section>
+    </main>
+  )
+}
+
+function ModelPage() {
+  return (
+    <main className="simple-page">
+      <section>
+        <p className="eyebrow">Próxima sección</p>
+        <h1>Modelos Jetour</h1>
+        <p className="lead">El Home premium ya está listo. Las páginas internas se pueden desarrollar modelo por modelo con fotos reales cuando lleguen los autos al local.</p>
+        <a className="btn primary" href={wsp()} target="_blank" rel="noreferrer">Cotizar por WhatsApp</a>
+      </section>
+    </main>
+  )
+}
+
+export default function App() {
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<ModelPage />} />
+      </Routes>
+      <footer>
+        <div><strong>JETOUR</strong><span>Drive Your Future</span></div>
+        <div><strong>GUILLERMO MORALES</strong><span>Respaldo y garantía</span></div>
+        <div className="social"><Instagram size={18}/><Users size={18}/><Car size={18}/></div>
+        <a href={wsp()} target="_blank" rel="noreferrer">WhatsApp</a>
+      </footer>
+      <a className="floating" href={wsp()} target="_blank" rel="noreferrer">WhatsApp</a>
+    </>
+  )
+}
