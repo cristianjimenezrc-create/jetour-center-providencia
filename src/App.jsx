@@ -12,11 +12,11 @@ const IMG = {
 }
 
 const models = [
-  { slug: 'x50', name: 'X50', type: 'SUV Urbano', tag: 'Ciudad', img: IMG.x50 },
-  { slug: 'x70-plus', name: 'X70 PLUS', type: 'SUV Familiar', tag: 'Familia', img: IMG.x70 },
-  { slug: 'dashing', name: 'DASHING', type: 'SUV Deportivo', tag: 'Diseño', img: IMG.dashing },
-  { slug: 't1', name: 'T1', type: 'SUV Adventure', tag: 'Adventure', img: IMG.t1 },
-  { slug: 't2', name: 'T2', type: 'SUV Off Road Premium', tag: 'Premium', img: IMG.t2 }
+  { slug: 'x50', name: 'X50', type: 'SUV Urbano', tag: 'Ciudad', img: IMG.x50, price: 12490000 },
+  { slug: 'x70-plus', name: 'X70 PLUS', type: 'SUV Familiar', tag: 'Familia', img: IMG.x70, price: 20990000 },
+  { slug: 'dashing', name: 'DASHING', type: 'SUV Deportivo', tag: 'Diseño', img: IMG.dashing, price: 16490000 },
+  { slug: 't1', name: 'T1', type: 'SUV Adventure', tag: 'Adventure', img: IMG.t1, price: 22990000 },
+  { slug: 't2', name: 'T2', type: 'SUV Off Road Premium', tag: 'Premium', img: IMG.t2, price: 29990000 }
 ]
 
 const benefits = [
@@ -25,6 +25,10 @@ const benefits = [
   { title: 'Seguridad', text: 'Airbags, ESP, asistencias a la conducción y estructura reforzada.', icon: '◇' },
   { title: 'Garantía', text: 'Respaldo oficial y atención directa en Guillermo Morales Bilbao.', icon: '✺' }
 ]
+
+function money(value) {
+  return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(value)
+}
 
 function wsp(message = 'Hola Cristián, quiero cotizar un Jetour y coordinar una visita a Bilbao.') {
   return `https://wa.me/${WSP}?text=${encodeURIComponent(message)}`
@@ -46,7 +50,7 @@ function ModelCard({ model, index }) {
   return (
     <motion.article className="model-card" initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
       <div className="model-photo"><img src={model.img} alt={`Jetour ${model.name}`} loading="lazy" /></div>
-      <div className="model-copy"><h3>{model.name}</h3><span>{model.type}</span><a href={wsp(`Hola Cristián, quiero información del Jetour ${model.name}.`)} target="_blank" rel="noreferrer">Ver modelo →</a></div>
+      <div className="model-copy"><h3>{model.name}</h3><span>{model.type}</span><strong className="cash-price">Precio contado desde {money(model.price)}</strong><small>Pide a tu asesor precios especiales de financiamiento.</small><a href={wsp(`Hola Cristián, quiero información y precio especial de financiamiento para el Jetour ${model.name}.`)} target="_blank" rel="noreferrer">Ver modelo →</a></div>
     </motion.article>
   )
 }
@@ -68,16 +72,16 @@ function Home() {
 
       <section className="cinematic"><div><h2>Cada viaje merece un SUV diseñado para sorprender.</h2><button aria-label="Ver experiencia">▷</button></div></section>
 
-      <section className="compare-strip" id="comparador"><div className="compare-copy"><div className="big-symbol">⚖</div><h2>¿No sabes cuál Jetour elegir?</h2><p>Compara toda la gama.</p><a className="btn dark" href={wsp('Hola Cristián, quiero comparar modelos Jetour.')} target="_blank" rel="noreferrer">Comparar modelos</a></div><div className="lineup">{models.map((model) => <img key={model.name} src={model.img} alt={model.name} />)}</div></section>
+      <section className="compare-strip" id="comparador"><div className="compare-copy"><div className="big-symbol">⚖</div><h2>¿No sabes cuál Jetour elegir?</h2><p>Compara toda la gama y solicita precios especiales de financiamiento con tu asesor.</p><a className="btn dark" href={wsp('Hola Cristián, quiero comparar modelos Jetour y conocer precios especiales de financiamiento.')} target="_blank" rel="noreferrer">Comparar modelos</a></div><div className="lineup">{models.map((model) => <img key={model.name} src={model.img} alt={model.name} />)}</div></section>
 
-      <section className="finance-test" id="financiamiento"><div className="finance-panel"><p className="section-kicker left">Financiamiento hecho para ti</p><div className="finance-options"><article><div className="big-symbol">▤</div><h3>Crédito</h3><p>Hasta 84 meses</p></article><article><div className="big-symbol">◉</div><h3>Compra inteligente</h3><ul><li>Bonos</li><li>Toma tu usado</li><li>Leasing</li></ul></article></div></div><div className="test-panel" id="test-drive"><div className="interior-art"><div className="screen" /><div className="wheel-art" /><div className="console" /></div><div><h2>Vive la experiencia antes de decidir.</h2><a className="btn light" href={wsp('Hola Cristián, quiero reservar un test drive Jetour.')} target="_blank" rel="noreferrer">Contactar asesor</a></div></div></section>
+      <section className="finance-test" id="financiamiento"><div className="finance-panel"><p className="section-kicker left">Financiamiento hecho para ti</p><div className="finance-options"><article><div className="big-symbol">▤</div><h3>Crédito</h3><p>Hasta 48 meses</p><small>Valores referenciales. Solicita evaluación personalizada.</small></article><article><div className="big-symbol">◉</div><h3>Compra inteligente</h3><ul><li>Pie desde 20%</li><li>Toma tu usado</li><li>Precio especial por financiamiento</li></ul></article></div></div><div className="test-panel" id="test-drive"><div className="interior-art"><div className="screen" /><div className="wheel-art" /><div className="console" /></div><div><h2>Vive la experiencia antes de decidir.</h2><a className="btn light" href={wsp('Hola Cristián, quiero reservar un test drive Jetour.')} target="_blank" rel="noreferrer">Contactar asesor</a></div></div></section>
 
-      <section className="location" id="contacto"><div className="dealer-art"><img src={IMG.t2} alt="Jetour showroom" /></div><div className="dealer-info"><h2>Guillermo Morales – Bilbao</h2><p>⌖ Av. Francisco Bilbao 2326, Providencia, Santiago</p><p>◷ Lunes a viernes 09:00 – 19:00 hrs · Sábado 10:00 – 14:00 hrs</p><p>☎ +56 9 4505 5463</p><p>✉ cristianjimenezrc@gmail.com</p><a className="btn dark" href={wsp()} target="_blank" rel="noreferrer">Contactar asesor</a></div><div className="map-art"><span>Guillermo Morales Bilbao</span></div></section>
+      <section className="location" id="contacto"><div className="dealer-art"><img src={IMG.t2} alt="Jetour showroom" /></div><div className="dealer-info"><h2>Guillermo Morales – Bilbao</h2><p>⌖ Av. Francisco Bilbao 2326, Providencia, Santiago</p><p>◷ Lunes a viernes 09:30 – 18:00 hrs</p><p>◷ Sábado 10:00 – 14:30 hrs</p><p>☎ +56 9 4505 5463</p><p>✉ cristianjimenezrc@gmail.com</p><a className="btn dark" href={wsp()} target="_blank" rel="noreferrer">Contactar asesor</a></div><div className="map-art"><span>Guillermo Morales Bilbao</span></div></section>
     </main>
   )
 }
 
-function ModelPage() { return <main className="simple-page"><section><p className="eyebrow">Próxima sección</p><h1>Modelos Jetour</h1><p className="lead">Las páginas internas se pueden desarrollar modelo por modelo con fotos reales cuando lleguen los autos al local.</p><a className="btn primary" href={wsp()} target="_blank" rel="noreferrer">Cotizar por WhatsApp</a></section></main> }
+function ModelPage() { return <main className="simple-page"><section><p className="eyebrow">Próxima sección</p><h1>Modelos Jetour</h1><p className="lead">Las páginas internas se pueden desarrollar modelo por modelo con fotos reales, galería, ficha técnica y simulador de crédito.</p><a className="btn primary" href={wsp()} target="_blank" rel="noreferrer">Cotizar por WhatsApp</a></section></main> }
 
 export default function App() {
   return <><Header /><Routes><Route path="/" element={<Home />} /><Route path="*" element={<ModelPage />} /></Routes><footer><div><strong>JETOUR</strong><span>Drive Your Future</span></div><div><strong>GUILLERMO MORALES</strong><span>Respaldo y garantía</span></div><div className="social"><span>IG</span><span>YT</span><span>TT</span></div><a href={wsp()} target="_blank" rel="noreferrer">WhatsApp</a></footer><a className="floating" href={wsp()} target="_blank" rel="noreferrer">WhatsApp</a></>
