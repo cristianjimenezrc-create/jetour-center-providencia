@@ -1,0 +1,1 @@
+Reintento de despliegue del cotizador Jetour luego de un error temporal de infraestructura de Vercel.
