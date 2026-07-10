@@ -1,17 +1,19 @@
-const SOURCES = {
-  x50: 'https://jetourchile.cl/documents/7190100/11940205/X50-Card.webp/97c09178-de06-3240-8213-f5cc446a8a80?t=1755889826966',
-  dashing: 'https://jetourchile.cl/documents/7190100/11482279/JETOUR-DASHING%2B%281%29.webp/5aa70ec2-c36a-d479-b2f8-966ac95baa0a?t=1749740112196',
-  x70: 'https://jetourangola.com/wp-content/uploads/2023/05/Layer-mb1-min-scaled.webp',
-  'x70-plus': 'https://jetourchile.cl/documents/7190100/13275002/X70%2BPlus-Card.webp/c67533fd-ba78-f7d2-53f1-1ce64266c1ce?t=1771255199333',
-  'x90-plus': 'https://jetourangola.com/wp-content/uploads/2023/04/Background4.png',
-  t1: 'https://jetourchile.cl/documents/7190100/11948154/T1-Card.webp/75f3de9f-ea3e-fd4f-4a42-05e7ae5075d2?t=1756147956003',
-  t2: 'https://jetourchile.cl/documents/7190100/11482279/JETOUR-T2%2B%281%29.webp/4f82898e-08d3-459b-8f48-52afb68a6486?t=1749740111919',
-  't1-phev': 'https://jetourchile.cl/documents/7190100/13122985/T1PHEV-Card%2B%281%29.webp/691c15b4-cf4f-fdd5-38ca-85048c36538b?t=1769088223015',
-  't2-phev': 'https://jetourchile.cl/documents/7190100/13122985/T2PHEV-Card.webp/af488f79-bfbf-f96e-d023-77055858304f?t=1769088336862'
+const SOURCE_IDS = {
+  x50: '1P34SmwIj4kbWaj2aZjf2y9n8Exo18Joo',
+  dashing: '1kv6bA1q47vbOdwrCXNi9SxrrAxMjrAc8',
+  x70: '19aqhpOCj21KFMl5WbrrnZxzSP-Ghvgyl',
+  'x70-plus': '1AwYV7iniot1GiwbLJmdcmMq2yULRUsxm',
+  'x90-plus': '1v8ryRJTBQyVbtkPSxwEFrU4IkmxmsvYj',
+  t1: '19Ktl-595Fk5_6cKtbRE1mgQsaRvYaRhz',
+  t2: '1Bv0eF5pewVIGcSZTY7L2RDGngxsKUuM7',
+  't1-phev': '19Ktl-595Fk5_6cKtbRE1mgQsaRvYaRhz',
+  't2-phev': '1Bv0eF5pewVIGcSZTY7L2RDGngxsKUuM7'
 }
 
-const proxyUrl = source =>
-  `https://images.weserv.nl/?url=${encodeURIComponent(source.replace(/^https?:\/\//, ''))}&output=webp&w=1400`
+const urlsFor = id => [
+  `https://drive.usercontent.google.com/download?id=${encodeURIComponent(id)}&export=download&confirm=t`,
+  `https://drive.google.com/uc?export=download&id=${encodeURIComponent(id)}`
+]
 
 async function requestImage(url) {
   const response = await fetch(url, {
@@ -22,13 +24,11 @@ async function requestImage(url) {
     redirect: 'follow'
   })
 
-  if (!response.ok) {
-    throw new Error(`Upstream ${response.status}`)
-  }
+  if (!response.ok) throw new Error(`Upstream ${response.status}`)
 
-  const contentType = response.headers.get('content-type') || 'image/webp'
+  const contentType = response.headers.get('content-type') || ''
   if (!contentType.startsWith('image/')) {
-    throw new Error('La respuesta no es una imagen')
+    throw new Error(`Respuesta no válida: ${contentType || 'sin content-type'}`)
   }
 
   return {
@@ -40,20 +40,27 @@ async function requestImage(url) {
 export default async function handler(req, res) {
   const rawSlug = Array.isArray(req.query?.slug) ? req.query.slug[0] : req.query?.slug
   const slug = String(rawSlug || '').toLowerCase()
-  const source = SOURCES[slug]
+  const id = SOURCE_IDS[slug]
 
-  if (!source) {
+  if (!id) {
     res.status(404).json({ error: 'Modelo no encontrado' })
     return
   }
 
   try {
-    let image
-    try {
-      image = await requestImage(source)
-    } catch {
-      image = await requestImage(proxyUrl(source))
+    let image = null
+    let lastError = null
+
+    for (const url of urlsFor(id)) {
+      try {
+        image = await requestImage(url)
+        break
+      } catch (error) {
+        lastError = error
+      }
     }
+
+    if (!image) throw lastError || new Error('Imagen no disponible')
 
     res.setHeader('Content-Type', image.contentType)
     res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800')
