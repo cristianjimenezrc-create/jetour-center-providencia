@@ -17,15 +17,17 @@ const FIXED_USERS = [
 const ADVISORS = {
   default: {
     name: 'Cristián Jiménez',
-    branch: 'Guillermo Morales Bilbao · Providencia',
+    branch: 'Sucursal Bilbao · Providencia',
+    address: 'Av. Francisco Bilbao 1147, Providencia',
     phone: '+56 9 4505 5463',
     email: 'cjimenez@guillermomorales.cl'
   },
   angel: {
     name: 'Ángel Magaña',
-    branch: 'Guillermo Morales Bilbao · Providencia',
-    phone: 'Datos pendientes',
-    email: 'Datos pendientes'
+    branch: 'Sucursal Bilbao · Providencia',
+    address: 'Av. Francisco Bilbao 1147, Providencia',
+    phone: '+56 9 4464 2151',
+    email: 'amagana@guillermomorales.cl'
   }
 }
 
@@ -58,12 +60,21 @@ function Login({ onLogin }) {
     setError('')
 
     if (!name.trim() || pass.length < 6) {
-      setError('Usa un nombre y una clave de al menos 6 caracteres.')
+      setError('Ingresa tu usuario y una contraseña de al menos 6 caracteres.')
       return
     }
 
     if (mode === 'setup') {
       const stored = JSON.parse(localStorage.getItem(USERS_KEY) || '[]')
+      const exists = readUsers().some(
+        user => user.name.toLowerCase() === name.trim().toLowerCase()
+      )
+
+      if (exists) {
+        setError('Ese usuario ya existe.')
+        return
+      }
+
       const next = [...stored, { name: name.trim(), pass, admin: true }]
       localStorage.setItem(USERS_KEY, JSON.stringify(next))
       setUsers(readUsers())
@@ -78,7 +89,7 @@ function Login({ onLogin }) {
     )
 
     if (!found) {
-      setError('Usuario o clave incorrectos.')
+      setError('Usuario o contraseña incorrectos.')
       return
     }
 
@@ -88,13 +99,19 @@ function Login({ onLogin }) {
 
   return (
     <main className="admin-shell login-shell">
+      <div className="login-glow login-glow-one" />
+      <div className="login-glow login-glow-two" />
       <form className="login-card" onSubmit={submit}>
-        <span>JETOUR · Área privada</span>
-        <h1>{mode === 'setup' ? 'Crear acceso local' : 'Ingreso ejecutivo'}</h1>
+        <div className="login-brand">
+          <strong>JETOUR</strong>
+          <span>Drive Your Future</span>
+        </div>
+        <div className="login-kicker">Área privada de cotizaciones</div>
+        <h1>{mode === 'setup' ? 'Crear acceso' : 'Ingreso usuario'}</h1>
         <p>
           {mode === 'setup'
-            ? 'Configura un acceso adicional para este dispositivo.'
-            : 'Ingresa para crear y descargar cotizaciones comerciales.'}
+            ? 'Configura un acceso adicional para utilizar el generador en este dispositivo.'
+            : 'Ingresa para crear, revisar y descargar cotizaciones comerciales.'}
         </p>
 
         <label>
@@ -103,6 +120,7 @@ function Login({ onLogin }) {
             value={name}
             onChange={event => setName(event.target.value)}
             autoComplete="username"
+            placeholder="Ej: amagana"
           />
         </label>
 
@@ -113,21 +131,25 @@ function Login({ onLogin }) {
             value={pass}
             onChange={event => setPass(event.target.value)}
             autoComplete="current-password"
+            placeholder="Ingresa tu contraseña"
           />
         </label>
 
         {error && <div className="form-error">{error}</div>}
 
         <button className="admin-primary">
-          {mode === 'setup' ? 'Crear acceso' : 'Ingresar'}
+          {mode === 'setup' ? 'Crear y continuar' : 'Ingresar al generador'}
         </button>
 
         <button
           type="button"
           className="text-btn"
-          onClick={() => setMode(mode === 'login' ? 'setup' : 'login')}
+          onClick={() => {
+            setMode(mode === 'login' ? 'setup' : 'login')
+            setError('')
+          }}
         >
-          {mode === 'login' ? 'Crear otro usuario local' : 'Volver al ingreso'}
+          {mode === 'login' ? 'Crear acceso local adicional' : 'Volver a ingreso usuario'}
         </button>
       </form>
     </main>
@@ -207,7 +229,7 @@ function PaymentEditor({ item, onChange, onRemove }) {
 
 export default function AdminQuote() {
   const [user, setUser] = useState(() => localStorage.getItem(SESSION_KEY) || '')
-  const [client, setClient] = useState('Cliente Premium')
+  const [client, setClient] = useState('')
   const [slug, setSlug] = useState(modelData[0].slug)
   const [version, setVersion] = useState(modelData[0].versions?.[0]?.name || '')
   const [validity, setValidity] = useState(
@@ -265,9 +287,18 @@ export default function AdminQuote() {
         backgroundColor: '#08111f'
       })
       const anchor = document.createElement('a')
-      anchor.download = `cotizacion-${client || 'cliente'}-${model.slug}.png`
+      const clientFile = (client || 'cliente-premium')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+      anchor.download = `cotizacion-${clientFile}-${model.slug}.png`
       anchor.href = data
       anchor.click()
+    } catch (error) {
+      console.error('No fue posible generar la cotización:', error)
+      alert('No fue posible descargar la imagen. Intenta nuevamente en unos segundos.')
     } finally {
       setBusy(false)
     }
@@ -288,7 +319,7 @@ export default function AdminQuote() {
           <span>Panel privado · {advisor.name}</span>
           <h1>Generador de cotizaciones</h1>
           <p>
-            Completa los datos, revisa la vista previa y descarga una pieza lista para WhatsApp.
+            Completa manualmente los datos, revisa la vista previa y descarga la imagen lista para WhatsApp.
           </p>
         </div>
         <button
@@ -305,11 +336,21 @@ export default function AdminQuote() {
       <section className="admin-layout">
         <div className="quote-form">
           <div className="panel">
-            <h2>Cliente y vehículo</h2>
+            <div className="panel-heading">
+              <div>
+                <span>01</span>
+                <h2>Cliente y vehículo</h2>
+              </div>
+              <b>CLIENTE PREMIUM</b>
+            </div>
             <div className="form-grid">
               <label>
                 Nombre del cliente
-                <input value={client} onChange={event => setClient(event.target.value)} />
+                <input
+                  value={client}
+                  onChange={event => setClient(event.target.value)}
+                  placeholder="Escribe el nombre del cliente"
+                />
               </label>
 
               <label>
@@ -339,9 +380,14 @@ export default function AdminQuote() {
 
           <div className="panel">
             <div className="section-row">
-              <h2>Formas de pago</h2>
+              <div className="panel-heading compact">
+                <div>
+                  <span>02</span>
+                  <h2>Formas de pago</h2>
+                </div>
+              </div>
               <button type="button" className="mini-btn" onClick={addPayment}>
-                + Agregar
+                + Agregar alternativa
               </button>
             </div>
 
@@ -362,7 +408,12 @@ export default function AdminQuote() {
           </div>
 
           <div className="panel">
-            <h2>Mensaje comercial</h2>
+            <div className="panel-heading compact">
+              <div>
+                <span>03</span>
+                <h2>Mensaje comercial</h2>
+              </div>
+            </div>
             <label>
               Beneficios
               <textarea
@@ -382,11 +433,15 @@ export default function AdminQuote() {
           </div>
 
           <button className="admin-primary export" onClick={exportPng} disabled={busy}>
-            {busy ? 'Generando imagen…' : 'Descargar cotización PNG'}
+            {busy ? 'Generando imagen…' : 'Descargar cotización en imagen PNG'}
           </button>
         </div>
 
         <div className="preview-wrap">
+          <div className="preview-label">
+            <span>Vista previa</span>
+            <b>Formato imagen listo para enviar</b>
+          </div>
           <div className={`quote-card quote-${model.slug}`} ref={quoteRef}>
             <div className="quote-hero" style={quoteStyle}>
               <div className="quote-scene" />
@@ -394,7 +449,8 @@ export default function AdminQuote() {
                 <strong>JETOUR</strong>
                 <span>Drive Your Future</span>
               </div>
-              <div className="premium-pill">PROPUESTA EXCLUSIVA</div>
+              <div className="premium-pill">CLIENTE PREMIUM</div>
+              <div className="model-pill">{model.type}</div>
               <img
                 className="quote-vehicle"
                 src={quoteImage}
@@ -402,10 +458,10 @@ export default function AdminQuote() {
                 crossOrigin="anonymous"
               />
               <div className="hero-fade" />
-              <div className="quote-date">{today()}</div>
+              <div className="quote-date">Cotización · {today()}</div>
               <div className="quote-title">
-                <small>Preparada especialmente para</small>
-                <h2>{client || 'Cliente'}</h2>
+                <small>Propuesta preparada para</small>
+                <h2>{client || 'Nombre del cliente'}</h2>
                 <h1>JETOUR {model.name}</h1>
                 <p>{version}</p>
               </div>
@@ -415,7 +471,7 @@ export default function AdminQuote() {
               <div className="commercial-intro">
                 <span>Tu próximo Jetour</span>
                 <strong>Elige la alternativa que mejor se adapta a ti</strong>
-                <p>Una propuesta clara, transparente y preparada para facilitar tu decisión.</p>
+                <p>Una propuesta clara, personalizada y preparada para facilitar tu decisión.</p>
               </div>
 
               <div className="offer-grid">
@@ -426,7 +482,7 @@ export default function AdminQuote() {
                   >
                     <div className="offer-top">
                       <span>{payment.type}</span>
-                      {index === 0 && <b>RECOMENDADA</b>}
+                      {index === 0 && <b>ALTERNATIVA DESTACADA</b>}
                     </div>
                     <strong>{money(payment.price)}</strong>
                     <em>Precio oferta</em>
@@ -457,12 +513,13 @@ export default function AdminQuote() {
               </div>
 
               <div className="advisor">
-                <div>
+                <div className="advisor-main">
                   <span>ASESOR COMERCIAL</span>
                   <strong>{advisor.name}</strong>
                   <small>{advisor.branch}</small>
+                  <small>{advisor.address}</small>
                 </div>
-                <div>
+                <div className="advisor-contact">
                   <b>{advisor.phone}</b>
                   <small>{advisor.email}</small>
                 </div>
