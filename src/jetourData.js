@@ -59,7 +59,7 @@ export const benefits = [
   { title: 'Crédito inteligente', text: 'Alternativas de cuota y valor futuro referencial.', icon: '◉' },
   { title: 'Test Drive', text: 'Agenda tu prueba en sucursal Bilbao, Providencia.', icon: '▣' },
   { title: 'Atención directa', text: 'Cotización personalizada por WhatsApp con tu ejecutivo.', icon: '☎' },
-  { title: 'Sucursal Bilbao', text: 'Av. Francisco Bilbao 1147, Providencia, Santiago.', icon: '⌖' }
+  { title: 'Sucursal Bilbao', text: 'Av. Francisco Bilbao 1127, Providencia, Santiago.', icon: '⌖' }
 ]
 
 export const modelData = [
