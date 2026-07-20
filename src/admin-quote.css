@@ -65,6 +65,7 @@ textarea::placeholder { color: #777; }
 .model-summary span { color: #74521f; text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; font-weight: 850; }
 .model-summary strong { color: #111; font-size: 1.45rem; }
 .model-summary small { color: #54504a; line-height: 1.4; }
+.official-source { width: max-content; margin-top: 4px; color: #8a6327; font-size: .72rem; font-weight: 850; }
 .panel-intro { margin: 12px 0 0; color: #5f5a51; font-size: .84rem; }
 .quick-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 14px 0 2px; }
 .quick-actions button { padding: 10px 9px; border: 1px solid #d6c7ad; background: #f7ecd8; color: #34240e; font-size: .72rem; }

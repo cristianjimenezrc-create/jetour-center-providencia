@@ -1,27 +1,34 @@
-const proxied = url =>
-  `https://images.weserv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&output=webp&w=1400`
-
-const official = url => proxied(url)
-
 export const IMG = {
-  hero: official('https://jetourchile.cl/documents/7190100/13275002/X70%2BPlus-Card.webp/c67533fd-ba78-f7d2-53f1-1ce64266c1ce?t=1771255199333'),
-  x50: official('https://jetourchile.cl/documents/7190100/11940205/X50-Card.webp/97c09178-de06-3240-8213-f5cc446a8a80?t=1755889826966'),
-  x50Secondary: official('https://jetourchile.cl/documents/7190100/11940205/X50-Item-Dise%C3%B1o.webp/07d2e02d-5d8d-903a-0b4d-a60ecda8a375?t=1755889824513'),
-  dashing: official('https://jetourchile.cl/documents/7190100/11482279/JETOUR-DASHING%2B%281%29.webp/5aa70ec2-c36a-d479-b2f8-966ac95baa0a?t=1749740112196'),
-  dashingSecondary: official('https://jetourchile.cl/documents/7190100/10318820/JETOUR_JX65_cam360_WHITE_DASHING__out.0001.png/65af9f2e-5b2d-153e-bfdc-bbabbad69947?t=1735942161679'),
-  x70: official('https://jetourchile.cl/documents/7190100/12792187/X70-Item-Dise%C3%B1o.webp/659add95-35b6-36b4-7671-4c662b2037fb?t=1763642107575'),
-  x70Secondary: official('https://jetourchile.cl/documents/7190100/12792187/X70-Item-Confort.webp/64ce9114-ebb1-8b25-72de-6528727a91a6?t=1763642107848'),
-  x70Plus: official('https://jetourchile.cl/documents/7190100/13275002/X70%2BPlus-Card.webp/c67533fd-ba78-f7d2-53f1-1ce64266c1ce?t=1771255199333'),
-  x70PlusSecondary: official('https://jetourchile.cl/documents/7190100/13275006/X70%2BPlus-Negro.webp/4e7e4007-03ec-ac2e-ff09-47d9cae369ae?t=1771255382266'),
-  x90Plus: official('https://jetourchile.cl/documents/7190100/10337262/JETOUR_X90_zilong_black_001.png/5ef172d2-2fea-8fe6-b97d-feb2a94c1802?t=1735950658744'),
-  x90PlusSecondary: official('https://jetourchile.cl/documents/7190100/8792296/Jetour-X90-plus-SUV-dise%C3%B1o-interior-detalle.webp/8c025ff1-1087-4ea4-46c4-fc05f8e9693b?t=1716475839133'),
-  t1: official('https://jetourchile.cl/documents/7190100/11948154/T1-Card.webp/75f3de9f-ea3e-fd4f-4a42-05e7ae5075d2?t=1756147956003'),
-  t1Secondary: official('https://jetourchile.cl/documents/7190100/11948154/T1-Item-Confort.webp/8dce1c51-f89e-dd3f-8355-28a84538e56c?t=1756147844336'),
-  t2: official('https://jetourchile.cl/documents/7190100/11482279/JETOUR-T2%2B%281%29.webp/4f82898e-08d3-459b-8f48-52afb68a6486?t=1749740111919'),
-  t2Secondary: official('https://jetourchile.cl/documents/7190100/9982240/T2_360_BLACK_0020.png/9ef53a37-fda1-bf11-4f0d-acdd39fa0b2f?t=1780001217852'),
-  t1Phev: official('https://jetourchile.cl/documents/7190100/13122985/T1PHEV-Card%2B%281%29.webp/691c15b4-cf4f-fdd5-38ca-85048c36538b?t=1769088223015'),
-  t2Phev: official('https://jetourchile.cl/documents/7190100/13122985/T2PHEV-Card.webp/af488f79-bfbf-f96e-d023-77055858304f?t=1769088336862'),
-  t2PhevSecondary: official('https://jetourchile.cl/documents/7190100/11532932/T2Hibrido_Negro.webp/a3c571dc-420d-f034-380f-28c6a77415fe?t=1750100027887'),
+  hero: '/vehicles/x70-plus-card.webp',
+  x50: '/vehicles/x50-card.webp',
+  x50Secondary: '/vehicles/x50-design.webp',
+  x50White: '/vehicles/x50-mt-lux.webp',
+  x50Black: '/vehicles/x50-6dct-lux.webp',
+  dashing: '/vehicles/dashing-card.webp',
+  dashingSecondary: '/vehicles/dashing-6mt-se.png',
+  dashingRed: '/vehicles/dashing-6mt-lux.png',
+  dashingBlue: '/vehicles/dashing-6dct-se.png',
+  dashingGray: '/vehicles/dashing-6dct-lux.png',
+  dashingTechGray: '/vehicles/dashing-7dct-limited.png',
+  x70: '/vehicles/x70-card.webp',
+  x70Secondary: '/vehicles/x70-confort.webp',
+  x70Black: '/vehicles/x70-6mt.webp',
+  x70White: '/vehicles/x70-6dct.webp',
+  x70Plus: '/vehicles/x70-plus-card.webp',
+  x70PlusSecondary: '/vehicles/x70-plus-6dct.webp',
+  x70PlusBlue: '/vehicles/x70-plus-7dct.webp',
+  x90Plus: '/vehicles/x90-plus.png',
+  x90PlusSecondary: '/vehicles/x90-plus-interior.webp',
+  t1: '/vehicles/t1-card.webp',
+  t1Secondary: '/vehicles/t1-confort.webp',
+  t1Gray: '/vehicles/t1-7dct-luxury.webp',
+  t1Blue: '/vehicles/t1-8at-limited.webp',
+  t2: '/vehicles/t2-card.webp',
+  t2Secondary: '/vehicles/t2-limited.png',
+  t1Phev: '/vehicles/t1-phev-card.webp',
+  t1PhevGreen: '/vehicles/t1-phev-limited.webp',
+  t2Phev: '/vehicles/t2-phev-card.webp',
+  t2PhevSecondary: '/vehicles/t2-phev-limited.webp',
   desert: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=1800&q=80',
   city: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=80',
   family: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80',
@@ -60,14 +67,12 @@ export const modelData = [
     slug: 'x50', name: 'X50', type: 'SUV compacto', tag: 'Ciudad', img: IMG.x50,
     quoteImages: [IMG.x50, IMG.x50Secondary], imageMode: 'cutout', accent: '#b98a3a', price: 12490000,
     desc: 'Compacto, ágil y eficiente para el uso diario.',
-    specs: { Motor: '1.5L / 1.5T', Potencia: '114 / 154 HP', Transmisión: '5MT / 6DCT', Tracción: '4x2', Combustible: 'Bencina', Pasajeros: '5' },
+    specs: { Motor: '1.5L / 1.5T', Potencia: '111 / 154 HP', Transmisión: '5MT / 6DCT', Tracción: '4x2', Combustible: 'Gasolina', Pasajeros: '5' },
     features: ['Radio touch 10,25”', 'Smart Key', 'Control crucero', 'Sensor trasero', 'Control de estabilidad', 'Asistencia en pendiente'],
     gallery: gallery([IMG.x50, IMG.x50Secondary], 'X50', 'urbano'),
     versions: [
-      v({ code: 'BX501', name: '1.5L MT LUX', price: 12490000, motor: '1.5L', hp: 114, transmission: '5MT', features: ['2 airbags', 'Sensor estacionamiento trasero', 'Radio touch 10,25”', 'Smart Key', 'Control crucero', 'Llantas 17”'], source: 'https://jetourchile.cl/w/x50' }),
-      v({ code: 'BX503', name: '1.5L MT LUX BICOLOR', price: 12790000, motor: '1.5L', hp: 114, transmission: '5MT', features: ['2 airbags', 'Sensor estacionamiento trasero', 'Radio touch 10,25”', 'Smart Key', 'Control crucero', 'Llantas 17”'], source: 'https://jetourchile.cl/w/x50' }),
-      v({ code: 'BX502', name: '1.5T 6DCT TURBO LUX', price: 15490000, motor: '1.5T', hp: 154, transmission: '6DCT', features: ['6 airbags', 'Sensor estacionamiento trasero', 'Cámara panorámica 360°', 'Advertencia de colisión', 'Radio touch 10,25”', 'Modos Eco/Normal/Sport'], source: 'https://jetourchile.cl/w/x50' }),
-      v({ code: 'BX504', name: '1.5T 6DCT TURBO LUX BICOLOR', price: 15790000, motor: '1.5T', hp: 154, transmission: '6DCT', features: ['6 airbags', 'Sensor estacionamiento trasero', 'Cámara panorámica 360°', 'Advertencia de colisión', 'Radio touch 10,25”', 'Modos Eco/Normal/Sport'], source: 'https://jetourchile.cl/w/x50' })
+      v({ code: 'BX501', name: '1.5L MT LUX', price: 12490000, motor: '1.5L', hp: 111, transmission: '5MT', quoteImages: [IMG.x50White, IMG.x50Secondary], features: ['2 airbags', 'Sensor estacionamiento trasero', 'Radio touch 10,25”', 'Smart Key', 'Control crucero', 'Llantas 17”'], source: 'https://jetourchile.cl/w/x50' }),
+      v({ code: 'BX502', name: '1.5T 6DCT TURBO LUX', price: 15490000, motor: '1.5T', hp: 154, transmission: '6DCT', quoteImages: [IMG.x50Black, IMG.x50Secondary], features: ['6 airbags', 'Sensor estacionamiento trasero', 'Cámara panorámica 360°', 'Advertencia de colisión', 'Radio touch 10,25”', 'Modos Eco/Normal/Sport'], source: 'https://jetourchile.cl/w/x50' })
     ]
   },
   {
@@ -78,11 +83,11 @@ export const modelData = [
     features: ['Motor turbo', 'Radio touch con conectividad', 'Smart Key', 'Control crucero', 'Sensor trasero', 'Equipamiento según versión'],
     gallery: gallery([IMG.dashing, IMG.dashingSecondary], 'Dashing', 'deportivo'),
     versions: [
-      v({ code: 'BD01', name: '6MT 1.5T Special Edition FL', price: 16490000, motor: '1.5T', hp: 145, transmission: '6MT', features: ['4 airbags', 'Sensor de proximidad trasero', 'Radio touch 12,8”', 'Smart Key + botón de encendido', 'Control crucero', 'Neumáticos 235/60 R18'], source: 'https://jetourchile.cl/w/dashing' }),
-      v({ code: 'BD02', name: '6MT 1.5T Turbo Lux FL', price: 17490000, motor: '1.5T', hp: 145, transmission: '6MT', features: ['4 airbags', 'Sensor de proximidad trasero', 'Cámara panorámica 360°', 'Radio touch 12,8”', 'Smart Key + botón de encendido', 'Neumáticos 235/55 R19'], source: 'https://jetourchile.cl/w/dashing' }),
-      v({ code: 'BD03', name: '6DCT 1.5T Special Edition FL', price: 18490000, motor: '1.5T', hp: 145, transmission: '6DCT', features: ['4 airbags', 'Sensor de proximidad trasero', 'Encendido remoto', 'Radio touch 12,8”', 'Modos Eco/Sport', 'Neumáticos 235/60 R18'], source: 'https://jetourchile.cl/w/dashing' }),
-      v({ code: 'BD04', name: '6DCT 1.5T Lux', price: 19490000, motor: '1.5T', hp: 145, transmission: '6DCT', features: ['6 airbags', 'Cámara panorámica 540°', 'Sensor de lluvia', 'Advertencia de colisión frontal y lateral', 'Sistema de seguridad ADAS', 'Portalón eléctrico regulable'], source: 'https://jetourchile.cl/w/dashing' }),
-      v({ code: 'BD05', name: '7DCT 1.6T Limited', price: 21990000, motor: '1.6T GDI', hp: 188, transmission: '7DCT', features: ['6 airbags', 'Sensores delanteros y traseros', 'Cámara panorámica 540°', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Climatizador dual automático'], source: 'https://jetourchile.cl/w/dashing' })
+      v({ code: 'BD01', name: '6MT 1.5L TURBO SPECIAL EDITION FL', price: 16490000, motor: '1.5T', hp: 145, transmission: '6MT', quoteImages: [IMG.dashingSecondary, IMG.dashing], features: ['4 airbags', 'Sensor de proximidad trasero', 'Radio touch 12,8”', 'Smart Key + botón de encendido', 'Control crucero', 'Neumáticos 235/60 R18'], source: 'https://jetourchile.cl/w/dashing' }),
+      v({ code: 'BD02', name: '6MT 1.5L TURBO LUX FL', price: 17490000, motor: '1.5T', hp: 145, transmission: '6MT', quoteImages: [IMG.dashingRed, IMG.dashing], features: ['4 airbags', 'Sensor de proximidad trasero', 'Cámara panorámica 360°', 'Radio touch 12,8”', 'Smart Key + botón de encendido', 'Neumáticos 235/55 R19'], source: 'https://jetourchile.cl/w/dashing' }),
+      v({ code: 'BD03', name: '6DCT 1.5L TURBO SPECIAL EDITION FL', price: 18490000, motor: '1.5T', hp: 145, transmission: '6DCT', quoteImages: [IMG.dashingBlue, IMG.dashing], features: ['4 airbags', 'Sensor de proximidad trasero', 'Encendido remoto', 'Radio touch 12,8”', 'Modos Eco/Sport', 'Neumáticos 235/60 R18'], source: 'https://jetourchile.cl/w/dashing' }),
+      v({ code: 'BD04', name: '6DCT 1.5L TURBO LUX FL', price: 19490000, motor: '1.5T', hp: 145, transmission: '6DCT', quoteImages: [IMG.dashingGray, IMG.dashing], features: ['6 airbags', 'Cámara panorámica 540°', 'Sensor de lluvia', 'Advertencia de colisión frontal y lateral', 'Sistema de seguridad ADAS', 'Portalón eléctrico regulable'], source: 'https://jetourchile.cl/w/dashing' }),
+      v({ code: 'BD05', name: '7DCT 1.6L TURBO GDI LIMITED FL', price: 21990000, motor: '1.6T GDI', hp: 188, transmission: '7DCT', quoteImages: [IMG.dashingTechGray, IMG.dashing], features: ['6 airbags', 'Sensores delanteros y traseros', 'Cámara panorámica 540°', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Climatizador dual automático'], source: 'https://jetourchile.cl/w/dashing' })
     ]
   },
   {
@@ -93,8 +98,8 @@ export const modelData = [
     features: ['7 pasajeros', '6 airbags', 'Radio touch 10,25”', 'Sunroof panorámico', 'Control crucero', 'Llantas aleación 20”'],
     gallery: gallery([IMG.x70, IMG.x70Secondary], 'X70', 'familiar'),
     versions: [
-      v({ code: 'BX701', name: '1.5T 6MT TURBO FL', price: 17490000, motor: '1.5T', hp: 145, transmission: '6MT', features: ['6 airbags', 'Cámara de retroceso', 'Sensor de proximidad trasero', 'Monitor presión de neumáticos', 'Sunroof panorámico', 'Radio touch 10,25”'], source: 'https://jetourchile.cl/w/x70' }),
-      v({ code: 'BX702', name: '1.5T 6DCT TURBO FL', price: 19490000, motor: '1.5T', hp: 145, transmission: '6DCT', features: ['6 airbags', 'Cámara de retroceso', 'Sensores delanteros y traseros', 'Portalón trasero eléctrico', 'Sunroof panorámico', 'Modos Eco/Sport'], source: 'https://jetourchile.cl/w/x70' })
+      v({ code: 'BX701', name: '1.5L 6MT TURBO FL', price: 17490000, motor: '1.5T', hp: 145, transmission: '6MT', quoteImages: [IMG.x70Black, IMG.x70Secondary], features: ['6 airbags', 'Cámara de retroceso', 'Sensor de proximidad trasero', 'Monitor presión de neumáticos', 'Sunroof panorámico', 'Radio touch 10,25”'], source: 'https://jetourchile.cl/w/x70' }),
+      v({ code: 'BX702', name: '1.5L 6DCT TURBO FL', price: 19490000, motor: '1.5T', hp: 145, transmission: '6DCT', quoteImages: [IMG.x70White, IMG.x70Secondary], features: ['6 airbags', 'Cámara de retroceso', 'Sensores delanteros y traseros', 'Portalón trasero eléctrico', 'Sunroof panorámico', 'Modos Eco/Sport'], source: 'https://jetourchile.cl/w/x70' })
     ]
   },
   {
@@ -105,8 +110,8 @@ export const modelData = [
     features: ['7 pasajeros', 'Cámara panorámica 360°', 'Radio touch 10,25”', 'Climatizador dual', 'Sunroof panorámico', 'Modos Eco/Normal/Sport'],
     gallery: gallery([IMG.x70Plus, IMG.x70PlusSecondary], 'X70 Plus', 'familiar'),
     versions: [
-      v({ code: 'BX705', name: '1.5T 6DCT FL', price: 20990000, motor: '1.5T', hp: 145, transmission: '6DCT', features: ['4 airbags', 'Cámara panorámica 360°', 'Advertencia cambio de carril', 'Asistencia electrónica de frenado', 'Climatizador dual', 'Sunroof panorámico'], source: 'https://jetourchile.cl/w/x70-plus' }),
-      v({ code: 'BX706', name: '1.6T GDI 7DCT LUX FL', price: 22490000, motor: '1.6T GDI', hp: 188, transmission: '7DCT', features: ['6 airbags', 'Sensor de proximidad trasero', 'Cámara panorámica 360°', 'Sensor de lluvia', 'Carga inalámbrica', 'Purificador de aire'], source: 'https://jetourchile.cl/w/x70-plus' })
+      v({ code: 'BX705', name: '1.5T 6DCT FL', price: 20990000, motor: '1.5T', hp: 145, transmission: '6DCT', quoteImages: [IMG.x70PlusSecondary, IMG.x70Plus], features: ['4 airbags', 'Cámara panorámica 360°', 'Advertencia cambio de carril', 'Asistencia electrónica de frenado', 'Climatizador dual', 'Sunroof panorámico'], source: 'https://jetourchile.cl/w/x70-plus' }),
+      v({ code: 'BX706', name: '1.6L GDI 7DCT LUX FL', price: 22490000, motor: '1.6T GDI', hp: 188, transmission: '7DCT', quoteImages: [IMG.x70PlusBlue, IMG.x70Plus], features: ['6 airbags', 'Sensor de proximidad trasero', 'Cámara panorámica 360°', 'Sensor de lluvia', 'Carga inalámbrica', 'Purificador de aire'], source: 'https://jetourchile.cl/w/x70-plus' })
     ]
   },
   {
@@ -117,7 +122,7 @@ export const modelData = [
     features: ['7 pasajeros', '6 airbags', 'Cámara 360°', 'ADAS', 'Control crucero adaptativo', 'Sunroof panorámico'],
     gallery: gallery([IMG.x90Plus, IMG.x90PlusSecondary], 'X90 Plus', 'premium'),
     versions: [
-      v({ code: 'BX901', name: '2.0T GDI 7DCT', price: 27490000, motor: '2.0T GDI', hp: 241, transmission: '7DCT', features: ['6 airbags', 'Cámara panorámica 360°', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Climatizador dual + aire 3ª fila', 'Sunroof panorámico'], source: 'https://jetourchile.cl/w/x90-plus' })
+      v({ code: 'BX901', name: '2.0T GDI 7DCT', price: 27490000, motor: '2.0T GDI', hp: 241, transmission: '7DCT', quoteImages: [IMG.x90Plus, IMG.x90PlusSecondary], features: ['6 airbags', 'Cámara panorámica 360°', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Climatizador dual + aire 3ª fila', 'Sunroof panorámico'], source: 'https://jetourchile.cl/w/x90-plus' })
     ]
   },
   {
@@ -128,10 +133,8 @@ export const modelData = [
     features: ['6 airbags', 'Freno electrónico con AutoHold', 'Monitor presión neumáticos', 'Diseño adventure', 'Interior tecnológico', 'Equipamiento según versión'],
     gallery: gallery([IMG.t1, IMG.t1Secondary], 'T1', 'adventure'),
     versions: [
-      v({ code: 'BT101', name: '1.5T 7DCT LUXURY', price: 22990000, motor: '1.5T', hp: 167, transmission: '7DCT', traction: '4x2', features: ['6 airbags', '3 modos de conducción', 'Freno electrónico con AutoHold', 'Monitor presión de neumáticos', 'Neumáticos 235/65 R18', 'Distancia entre ejes 2.800 mm'], source: 'https://jetourchile.cl/w/t1' }),
-      v({ code: 'BT103', name: '1.5T 7DCT LUXURY MATE', price: 23490000, motor: '1.5T', hp: 167, transmission: '7DCT', traction: '4x2', features: ['6 airbags', '3 modos de conducción', 'Freno electrónico con AutoHold', 'Monitor presión de neumáticos', 'Neumáticos 235/65 R18', 'Distancia entre ejes 2.800 mm'], source: 'https://jetourchile.cl/w/t1' }),
-      v({ code: 'BT102', name: '2.0T 8AT XWD LIMITED', price: 26990000, motor: '2.0T', hp: 241, transmission: '8AT', traction: 'XWD', features: ['Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Frenado de emergencia AEB', 'Monitoreo punto ciego', 'Cámara 360° + chasis 180°', 'Asientos eléctricos ventilados y calefaccionados'], source: 'https://jetourchile.cl/w/t1' }),
-      v({ code: 'BT104', name: '2.0T 8AT XWD LIMITED MATE', price: 27490000, motor: '2.0T', hp: 241, transmission: '8AT', traction: 'XWD', features: ['Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Frenado de emergencia AEB', 'Monitoreo punto ciego', 'Cámara 360° + chasis 180°', 'Asientos eléctricos ventilados y calefaccionados'], source: 'https://jetourchile.cl/w/t1' })
+      v({ code: 'BT101', name: '1.5T 7DCT LUXURY', price: 22990000, motor: '1.5T', hp: 167, transmission: '7DCT', traction: '4x2', quoteImages: [IMG.t1Gray, IMG.t1Secondary], features: ['6 airbags', '3 modos de conducción', 'Freno electrónico con AutoHold', 'Monitor presión de neumáticos', 'Neumáticos 235/65 R18', 'Distancia entre ejes 2.800 mm'], source: 'https://jetourchile.cl/w/t1' }),
+      v({ code: 'BT102', name: '2.0T 8AT XWD LIMITED', price: 26990000, motor: '2.0T', hp: 241, transmission: '8AT', traction: 'XWD', quoteImages: [IMG.t1Blue, IMG.t1], features: ['Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Frenado de emergencia AEB', 'Monitoreo punto ciego', 'Cámara 360° + chasis 180°', 'Asientos eléctricos ventilados y calefaccionados'], source: 'https://jetourchile.cl/w/t1' })
     ]
   },
   {
@@ -142,8 +145,7 @@ export const modelData = [
     features: ['AWD inteligente', 'ADAS', 'Cámara 360° + chasis 180°', 'Pantalla 15,6”', 'Sunroof panorámico', 'Llantas 20”'],
     gallery: gallery([IMG.t2, IMG.t2Secondary], 'T2', 'off road'),
     versions: [
-      v({ code: 'BT201', name: '2.0T GDI AWD 7DCT LIMITED', price: 29990000, motor: '2.0T GDI', hp: 241, transmission: '7DCT', traction: 'AWD', features: ['Tracción inteligente AWD', 'Sistema de seguridad ADAS', 'Cámara 360° + chasis transparente 180°', 'Pantalla 15,6” con CarPlay/Android Auto', 'Climatizador dual', 'Sunroof panorámico'], source: 'https://jetourchile.cl/w/t2' }),
-      v({ code: 'BT202', name: '2.0T GDI AWD 7DCT LIMITED MATE', price: 30490000, motor: '2.0T GDI', hp: 241, transmission: '7DCT', traction: 'AWD', features: ['Tracción inteligente AWD', 'Sistema de seguridad ADAS', 'Cámara 360° + chasis transparente 180°', 'Pantalla 15,6” con CarPlay/Android Auto', 'Climatizador dual', 'Sunroof panorámico'], source: 'https://jetourchile.cl/w/t2' })
+      v({ code: 'BT201', name: '2.0T GDI AWD 7DCT LIMITED', price: 29990000, motor: '2.0T GDI', hp: 241, transmission: '7DCT', traction: 'AWD', quoteImages: [IMG.t2Secondary, IMG.t2], features: ['Tracción inteligente AWD', 'Sistema de seguridad ADAS', 'Cámara 360° + chasis transparente 180°', 'Pantalla 15,6” con CarPlay/Android Auto', 'Climatizador dual', 'Sunroof panorámico'], source: 'https://jetourchile.cl/w/t2' })
     ]
   },
   {
@@ -154,8 +156,7 @@ export const modelData = [
     features: ['6 airbags', 'ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Pantalla 15,6” inalámbrica', 'Autonomía combinada +1.000 km'],
     gallery: gallery([IMG.t1Phev], 'T1 PHEV', 'híbrido'),
     versions: [
-      v({ code: 'PT101', name: '1.5T PHEV LIMITED', price: 29990000, motor: '1.5T PHEV', hp: 341, transmission: 'PHEV', features: ['6 airbags', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Asistente mantenimiento de carril', 'Autonomía combinada +1.000 km'], source: 'https://jetourchile.cl/web/jetour/w/t1-phev' }),
-      v({ code: 'PT102', name: '1.5T PHEV LIMITED MATE', price: 30490000, motor: '1.5T PHEV', hp: 341, transmission: 'PHEV', features: ['6 airbags', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Asistente mantenimiento de carril', 'Autonomía combinada +1.000 km'], source: 'https://jetourchile.cl/web/jetour/w/t1-phev' })
+      v({ code: 'PT101', name: '1.5T PHEV LIMITED', price: 29990000, motor: '1.5T PHEV', hp: 341, transmission: 'DHT', quoteImages: [IMG.t1PhevGreen, IMG.t1Phev], features: ['6 airbags', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Asistente mantenimiento de carril', 'Autonomía combinada +1.000 km'], source: 'https://jetourchile.cl/w/t1-phev' })
     ]
   },
   {
@@ -166,8 +167,7 @@ export const modelData = [
     features: ['6 airbags', 'ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Pantalla 15,6” inalámbrica', 'Autonomía hasta 1.000 km'],
     gallery: gallery([IMG.t2Phev, IMG.t2PhevSecondary], 'T2 PHEV', 'híbrido'),
     versions: [
-      v({ code: 'PT201', name: '1.5T PHEV LIMITED', price: 36990000, motor: '1.5T PHEV', hp: 375, transmission: 'PHEV', features: ['6 airbags', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Asistente mantenimiento de carril', 'Autonomía hasta 1.000 km'], source: 'https://jetourchile.cl/w/t2-phev' }),
-      v({ code: 'PT202', name: '1.5T PHEV LIMITED MATE', price: 37490000, motor: '1.5T PHEV', hp: 375, transmission: 'PHEV', features: ['6 airbags', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Asistente mantenimiento de carril', 'Autonomía hasta 1.000 km'], source: 'https://jetourchile.cl/w/t2-phev' })
+      v({ code: 'PT201', name: '1.5T PHEV LIMITED', price: 36990000, motor: '1.5T PHEV', hp: 375, transmission: 'DHT', quoteImages: [IMG.t2PhevSecondary, IMG.t2Phev], features: ['6 airbags', 'Sistema de seguridad ADAS', 'Control crucero adaptativo', 'Cámara 540°', 'Asistente mantenimiento de carril', 'Autonomía hasta 1.000 km'], source: 'https://jetourchile.cl/w/t2-phev' })
     ]
   }
 ]

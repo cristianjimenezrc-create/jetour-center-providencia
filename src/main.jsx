@@ -5,7 +5,6 @@ import Root from './Root.jsx'
 import './styles.css'
 import './model-gallery.css'
 import './desert-theme.css'
-import './quote-download-fix.js'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

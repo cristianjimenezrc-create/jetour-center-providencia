@@ -3,7 +3,6 @@ import { toPng } from 'html-to-image'
 import { modelData } from './jetourData.js'
 import './admin-quote.css'
 
-const USERS_KEY = 'jetour_quote_users_v1'
 const SESSION_KEY = 'jetour_quote_session_v1'
 const DRAFT_KEY = 'jetour_quote_draft_v3'
 const TYPES = ['Contado', 'Crédito inteligente', 'Crédito convencional']
@@ -12,7 +11,10 @@ const ADVISORS = {
   default: { name: 'Cristián Jiménez', phone: '+56 9 4505 5463', email: 'cjimenez@guillermomorales.cl' },
   angel: { name: 'Ángel Magaña', phone: '+56 9 4464 2151', email: 'amagana@guillermomorales.cl' }
 }
-const FIXED_USERS = [{ name: 'amagana', pass: '123456789', advisorKey: 'angel' }]
+const FIXED_USERS = [
+  { name: 'cjimenez', pass: '123456789', advisorKey: 'default' },
+  { name: 'amagana', pass: '123456789', advisorKey: 'angel' }
+]
 
 const clean = value => String(value || '').replace(/\D/g, '')
 const amount = value => typeof value === 'number' ? value : Number(clean(value)) || 0
@@ -33,11 +35,7 @@ const newPayment = (type = 'Contado') => ({
   insurance: type === 'Contado' ? '' : 'Sin seguro de cesantía',
   note: ''
 })
-const getUsers = () => {
-  let local = []
-  try { local = JSON.parse(localStorage.getItem(USERS_KEY) || '[]') } catch { local = [] }
-  return [...local, ...FIXED_USERS.filter(fixed => !local.some(user => user.name.toLowerCase() === fixed.name.toLowerCase()))]
-}
+const getUsers = () => FIXED_USERS
 const draftKey = user => `${DRAFT_KEY}:${String(user || '').toLowerCase()}`
 const readDraft = user => {
   if (!user) return {}
@@ -76,7 +74,6 @@ const waitForImages = async element => {
 }
 
 function Login({ done }) {
-  const [mode, setMode] = useState('login')
   const [name, setName] = useState('')
   const [pass, setPass] = useState('')
   const [error, setError] = useState('')
@@ -85,15 +82,6 @@ function Login({ done }) {
     setError('')
     const normalized = name.trim()
     if (!normalized || pass.length < 6) return setError('Ingresa usuario y contraseña de al menos 6 caracteres.')
-    if (mode === 'setup') {
-      if (getUsers().some(user => user.name.toLowerCase() === normalized.toLowerCase())) return setError('Ese usuario ya existe.')
-      let local = []
-      try { local = JSON.parse(localStorage.getItem(USERS_KEY) || '[]') } catch { local = [] }
-      localStorage.setItem(USERS_KEY, JSON.stringify([...local, { name: normalized, pass, admin: true }]))
-      localStorage.setItem(SESSION_KEY, normalized)
-      done(normalized)
-      return
-    }
     const found = getUsers().find(user => user.name.toLowerCase() === normalized.toLowerCase() && user.pass === pass)
     if (!found) return setError('Usuario o contraseña incorrectos.')
     localStorage.setItem(SESSION_KEY, found.name)
@@ -102,13 +90,12 @@ function Login({ done }) {
   return <main className="admin-shell login-shell"><form className="login-card" onSubmit={submit}>
     <div className="login-brand"><strong>JETOUR</strong><span>Drive Your Future</span></div>
     <div className="login-kicker">Área privada de cotizaciones</div>
-    <h1>{mode === 'setup' ? 'Crear acceso' : 'Ingreso usuario'}</h1>
+    <h1>Ingreso usuario</h1>
     <p>Cotizaciones verificadas por modelo y versión, listas para enviar por WhatsApp.</p>
     <label>Usuario<input value={name} onChange={e => setName(e.target.value)} autoComplete="username" /></label>
     <label>Contraseña<input type="password" value={pass} onChange={e => setPass(e.target.value)} autoComplete="current-password" /></label>
     {error && <div className="form-error">{error}</div>}
-    <button className="admin-primary">{mode === 'setup' ? 'Crear y continuar' : 'Ingresar al cotizador'}</button>
-    <button type="button" className="text-btn" onClick={() => { setMode(mode === 'login' ? 'setup' : 'login'); setError('') }}>{mode === 'login' ? 'Crear acceso local adicional' : 'Volver al ingreso'}</button>
+    <button className="admin-primary">Ingresar al cotizador</button>
   </form></main>
 }
 
@@ -175,7 +162,7 @@ export default function AdminQuote() {
   const offers = payments.filter(item => amount(item.price) > 0)
   const incomplete = offers.filter(item => item.type !== 'Contado' && (!amount(item.down) || !amount(item.months) || !amount(item.installment)))
   const versionFeatures = version.features?.length ? version.features : model.features
-  const sourceImages = version.quoteImages?.length ? version.quoteImages : model.quoteImages?.length ? model.quoteImages : [model.img]
+  const sourceImages = [...new Set([...(version.quoteImages || []), ...(model.quoteImages || []), model.img])].slice(0, 2)
   const displayImages = renderImages.length ? renderImages : sourceImages
   const listPrice = version.price
   const tradeNet = amount(tradeValue) - amount(tradeDebt)
@@ -193,12 +180,12 @@ export default function AdminQuote() {
     setRenderImages(sourceImages)
     setImageReady(false)
     setImageIssue('')
-    Promise.allSettled(sourceImages.slice(0, 2).map(url => prepareImage(url, controller.signal))).then(results => {
+    Promise.allSettled(sourceImages.map(url => prepareImage(url, controller.signal))).then(results => {
       if (!active) return
-      const prepared = results.map((result, index) => result.status === 'fulfilled' ? result.value : sourceImages[index]).filter(Boolean)
+      const prepared = results.filter(result => result.status === 'fulfilled').map(result => result.value)
       setRenderImages(prepared)
-      if (prepared[0]) setImageReady(true)
-      else setImageIssue(`No fue posible preparar las imágenes del Jetour ${model.name}.`)
+      if (prepared.length >= 2) setImageReady(true)
+      else setImageIssue(`Se necesitan dos imágenes válidas del Jetour ${model.name} ${version.name} para descargar la cotización.`)
     })
     return () => { active = false; controller.abort() }
   }, [model.name, version.code])
@@ -296,7 +283,7 @@ export default function AdminQuote() {
             <label>Modelo<select value={slug} onChange={e => changeModel(e.target.value)}>{modelData.map(item => <option key={item.slug} value={item.slug}>Jetour {item.name}</option>)}</select></label>
             <label>Versión<select value={version.code} onChange={e => setVersionCode(e.target.value)}>{model.versions.map(item => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label>
           </div>
-          <div className="model-summary"><img src={primaryImage} alt={`Jetour ${model.name}`} crossOrigin="anonymous" referrerPolicy="no-referrer" /><div><span>Precio lista julio 2026</span><strong>{money(listPrice)}</strong><small>{version.motor} · {version.hp} HP · {version.transmission} · {version.traction}</small><small>Ficha y equipamiento verificados para esta versión.</small></div></div>
+          <div className="model-summary"><img src={primaryImage} alt={`Jetour ${model.name} ${version.name}`} /><div><span>Precio lista julio 2026</span><strong>{money(listPrice)}</strong><small>{version.motor} · {version.hp} HP · {version.transmission} · {version.traction}</small><small>Ficha, equipamiento e imagen verificados para esta versión.</small><a className="official-source" href={version.source} target="_blank" rel="noreferrer">Revisar fuente oficial Jetour ↗</a></div></div>
         </div>
         <div className="panel"><div className="panel-heading compact"><div><span>02</span><h2>Alternativas</h2></div></div><p className="panel-intro">Solo se muestran alternativas con precio oferta.</p><div className="quick-actions">{TYPES.map(type => <button key={type} type="button" onClick={() => setPayments(all => [...all, newPayment(type)])}>Agregar {type}</button>)}</div>{payments.map((item, index) => <PaymentEditor key={item.id} item={item} change={next => setPayments(all => all.map((row, i) => i === index ? next : row))} remove={() => setPayments(all => all.filter((_, i) => i !== index))} />)}</div>
         <div className="panel"><div className="panel-heading compact"><div><span>03</span><h2>Retoma y pie</h2></div></div><div className="form-grid"><label className="wide">Vehículo en parte de pago<input value={tradeDescription} onChange={e => setTradeDescription(e.target.value)} /></label><label>Valor toma<input inputMode="numeric" value={tradeValue} onChange={e => setTradeValue(clean(e.target.value))} /></label><label>Deuda prepago<input inputMode="numeric" value={tradeDebt} onChange={e => setTradeDebt(clean(e.target.value))} /></label><label>Aporte adicional<input inputMode="numeric" value={extraDown} onChange={e => setExtraDown(clean(e.target.value))} /></label><div className="calculated-field"><span>{tradeNet >= 0 ? 'Saldo a favor' : 'Diferencia'}</span><strong>{money(Math.abs(tradeNet))}</strong></div><div className="calculated-field wide"><span>Pie disponible</span><strong>{money(totalDown)}</strong></div></div></div>
@@ -308,7 +295,7 @@ export default function AdminQuote() {
         <div className={`quote-card image-mode-${model.imageMode || 'cutout'}`} ref={quoteRef}>
           <header className="quote-header"><div className="gm-brand"><strong>GM</strong><div><b>GUILLERMO MORALES</b><small>AUTOMOTRIZ</small></div></div><div className="quote-heading"><strong>COTIZACIÓN</strong><span>PERSONALIZADA</span></div></header>
           <section className="quote-product" style={{ '--quote-accent': model.accent || '#b98a3a' }}>
-            <div className="quote-product-copy">{premium && <div className="premium-pill">CLIENTE PREMIUM</div>}<small>Propuesta preparada para</small><h2>{client || 'Nombre del cliente'}</h2>{creditHolder && <div className="credit-holder">Crédito a nombre de <b>{creditHolder}</b></div>}<h1>JETOUR {model.name}</h1><p>{version.name}</p><div className="vehicle-meta"><span>{version.motor}</span><span>{version.hp} HP</span><span>{version.transmission}</span><span>{version.traction}</span></div></div>
+            <div className="quote-product-copy">{premium && <div className="premium-pill">CLIENTE PREMIUM</div>}<small>Propuesta preparada para</small><h2>{client || 'Nombre del cliente'}</h2>{creditHolder && <div className="credit-holder">Crédito a nombre de <b>{creditHolder}</b></div>}<h1>JETOUR {model.name}</h1><p>{version.name}</p><div className="vehicle-meta"><span>Motor {version.motor}</span><span>{version.hp} HP</span><span>{version.transmission}</span><span>Tracción {version.traction}</span><span>{model.specs.Combustible}</span><span>{model.specs.Pasajeros} pasajeros</span></div></div>
             <div className="quote-product-image">
               <img src={primaryImage} alt={`${model.name} vista principal`} crossOrigin="anonymous" referrerPolicy="no-referrer" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: model.imageMode === 'photo' ? 'cover' : 'contain', transform: model.imageMode === 'photo' ? 'none' : 'scale(1.02)', filter: 'drop-shadow(0 18px 20px rgba(0,0,0,.2))' }} />
               {secondaryImage && <img src={secondaryImage} alt={`${model.name} segunda vista`} crossOrigin="anonymous" referrerPolicy="no-referrer" style={{ position: 'absolute', inset: 'auto 17px 17px auto', width: '43%', height: '35%', objectFit: 'cover', transform: 'none', filter: 'none', border: '4px solid white', borderRadius: '14px', boxShadow: '0 10px 24px rgba(0,0,0,.22)', zIndex: 4 }} />}
