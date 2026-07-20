@@ -171,3 +171,60 @@ export const modelData = [
     ]
   }
 ]
+
+export const technicalDetails = {
+  x50: {
+    'Dimensiones y capacidad': ['Largo 4.397 mm', 'Ancho 1.841 mm', 'Alto 1.654 mm', 'Distancia entre ejes 2.601 mm', '5 pasajeros'],
+    'Motor y desempeño': ['Motor 1.5L o 1.5 Turbo según versión', '111 o 154 HP', 'Transmisión 5MT o automática 6DCT', 'Tracción delantera 4x2', 'Modos Eco / Normal / Sport en versión Turbo'],
+    'Chasis y seguridad': ['Dirección asistida eléctrica', 'Control electrónico de estabilidad', 'Control de tracción', 'Asistencia de partida en pendiente', 'Monitor de presión de neumáticos', 'Hasta 6 airbags según versión'],
+    'Tecnología y confort': ['Radio touch 10,25”', 'Smart Key y botón de encendido', 'Control crucero', 'Cámara panorámica 360° según versión', 'Sensores de estacionamiento', 'Llantas de aleación 17”']
+  },
+  dashing: {
+    'Dimensiones y capacidad': ['Largo 4.590 mm', 'Ancho 1.900 mm', 'Alto 1.685 mm', 'Distancia entre ejes 2.720 mm', '5 pasajeros', 'Maletero 486 / 977 litros'],
+    'Motor y desempeño': ['1.5 Turbo: 145 HP y 210 Nm', '1.6 Turbo GDI: 188 HP y 275 Nm', '6MT, 6DCT o 7DCT según versión', 'Consumo mixto referencial hasta 12,7 km/l', 'Norma Euro 6C'],
+    'Chasis y seguridad': ['Suspensión delantera McPherson', 'Suspensión trasera Multilink', 'Frenos de disco y estacionamiento electrónico con AutoHold', 'Hasta 6 airbags', 'Cámara panorámica 360°/540° según versión', 'ADAS y control crucero adaptativo en Limited'],
+    'Tecnología y confort': ['Radio touch de 12,8” o 15,6”', 'Apple CarPlay y Android Auto inalámbricos', 'Climatizador y salida de aire trasera', 'Cargador inalámbrico según versión', 'Portalón eléctrico según versión', 'Sunroof panorámico según versión']
+  },
+  x70: {
+    'Dimensiones y capacidad': ['Largo 4.743 mm', 'Ancho 1.900 mm', 'Alto 1.720 mm', 'Distancia entre ejes 2.720 mm', '7 pasajeros', 'Estanque 57 litros', 'Maletero 89 / 1.680 litros'],
+    'Motor y desempeño': ['Motor 1.5 Turbo', '145 HP a 5.500 rpm', 'Torque 210 Nm', '6MT o automática 6DCT', 'Tracción delantera 4x2', 'Norma Euro 6C'],
+    'Chasis y seguridad': ['Dirección eléctrica EPS', 'Suspensión delantera McPherson', 'Suspensión trasera Multilink', 'Freno electrónico con AutoHold', '6 airbags', 'ABS, EBD, ESP, TCS y monitor de presión'],
+    'Tecnología y confort': ['7 asientos en eco-cuero', 'Panel digital 12,3”', 'Radio touch 10,25”', 'CarPlay y Android Auto inalámbricos', 'Sunroof panorámico', 'Portalón eléctrico en versión automática']
+  },
+  'x70-plus': {
+    'Dimensiones y capacidad': ['Largo 4.724 mm', 'Ancho 1.900 mm', 'Alto 1.720 mm', 'Distancia entre ejes 2.720 mm', '7 pasajeros', 'Estanque 57 litros'],
+    'Motor y desempeño': ['1.5 Turbo: 145 HP', '1.6 Turbo GDI: 188 HP', 'Automática 6DCT o 7DCT', 'Tracción delantera 4x2', 'Modos Eco / Normal / Sport'],
+    'Chasis y seguridad': ['Suspensión independiente McPherson / Multilink', 'Freno electrónico con AutoHold', 'Hasta 6 airbags', 'Cámara panorámica 360°', 'Advertencia de cambio de carril', 'Asistencia electrónica de frenado'],
+    'Tecnología y confort': ['Climatizador dual', 'Sunroof panorámico', 'Portalón trasero eléctrico', 'Carga inalámbrica según versión', 'Purificador de aire según versión', 'Conectividad para smartphone']
+  },
+  'x90-plus': {
+    'Dimensiones y capacidad': ['Largo 4.858 mm', 'Ancho 1.925 mm', 'Alto 1.780 mm', 'Distancia entre ejes 2.850 mm', '7 pasajeros'],
+    'Motor y desempeño': ['Motor 2.0 Turbo GDI', '241 HP', 'Torque 390 Nm', 'Automática 7DCT', 'Tracción delantera 4x2'],
+    'Chasis y seguridad': ['Suspensión independiente', '6 airbags', 'Cámara panorámica 360°', 'Sistema ADAS', 'Control crucero adaptativo', 'Frenado autónomo de emergencia'],
+    'Tecnología y confort': ['Tres filas de asientos', 'Climatizador dual con salida para tercera fila', 'Sunroof panorámico', 'Asientos eléctricos', 'Pantallas digitales', 'Conectividad Apple CarPlay / Android Auto']
+  },
+  t1: {
+    'Dimensiones y capacidad': ['Largo 4.706 mm', 'Ancho 1.967 mm', 'Alto 1.845 mm', 'Distancia entre ejes 2.800 mm', '5 pasajeros'],
+    'Motor y desempeño': ['1.5 Turbo: 167 HP con 7DCT', '2.0 Turbo: 241 HP con 8AT', 'Tracción 4x2 o inteligente XWD', 'Múltiples modos de conducción según versión'],
+    'Chasis y seguridad': ['Suspensión independiente McPherson / Multilink', 'Freno electrónico con AutoHold', '6 airbags', 'ADAS en versión Limited', 'Cámara 360° con chasis transparente 180°', 'Monitoreo de punto ciego'],
+    'Tecnología y confort': ['Pantalla central de gran formato', 'CarPlay y Android Auto', 'Asientos eléctricos ventilados y calefaccionados en Limited', 'Climatizador', 'Carga inalámbrica', 'Diseño adventure']
+  },
+  t2: {
+    'Dimensiones y capacidad': ['Largo 4.785 mm', 'Ancho 2.006 mm', 'Alto 1.880 mm', 'Distancia entre ejes 2.800 mm', '5 pasajeros'],
+    'Motor y desempeño': ['Motor 2.0 Turbo GDI', '241 HP', 'Torque 390 Nm', 'Automática 7DCT', 'Tracción inteligente AWD', 'Modos de conducción todoterreno'],
+    'Chasis y seguridad': ['Estructura de alta resistencia', 'Suspensión independiente', '6 airbags', 'Sistema ADAS', 'Cámara 360° y chasis transparente 180°', 'Control crucero adaptativo'],
+    'Tecnología y confort': ['Pantalla 15,6”', 'CarPlay y Android Auto', 'Climatizador dual', 'Sunroof panorámico', 'Llantas 20”', 'Asientos eléctricos']
+  },
+  't1-phev': {
+    'Dimensiones y capacidad': ['Largo 4.706 mm', 'Ancho 1.967 mm', 'Alto 1.845 mm', 'Distancia entre ejes 2.800 mm', '5 pasajeros'],
+    'Sistema híbrido': ['Motor 1.5 Turbo PHEV', 'Potencia combinada 341 HP', 'Transmisión híbrida DHT', 'Tracción 4x2', 'Autonomía combinada superior a 1.000 km'],
+    'Seguridad': ['6 airbags', 'Sistema ADAS', 'Control crucero adaptativo', 'Cámara panorámica 540°', 'Asistente de mantenimiento de carril', 'Frenado autónomo de emergencia'],
+    'Tecnología y confort': ['Pantalla 15,6”', 'CarPlay y Android Auto inalámbricos', 'Carga inalámbrica', 'Climatizador', 'Smart Key', 'Conducción eléctrica para trayectos urbanos']
+  },
+  't2-phev': {
+    'Dimensiones y capacidad': ['Largo 4.785 mm', 'Ancho 2.006 mm', 'Alto 1.880 mm', 'Distancia entre ejes 2.800 mm', '5 pasajeros'],
+    'Sistema híbrido': ['Motor gasolina 1.5 Turbo de 154 HP', 'Motor eléctrico de 221 HP', 'Potencia combinada 375 HP', 'Transmisión híbrida DHT', 'Autonomía combinada superior a 1.000 km'],
+    'Seguridad': ['6 airbags', 'Sistema ADAS', 'Control crucero adaptativo', 'Cámara panorámica 540°', 'Asistente de mantenimiento de carril', 'Frenado autónomo de emergencia'],
+    'Tecnología y confort': ['Pantalla 15,6”', 'CarPlay y Android Auto inalámbricos', 'Climatizador dual', 'Sunroof panorámico', 'Carga inalámbrica', 'Diseño todoterreno']
+  }
+}
