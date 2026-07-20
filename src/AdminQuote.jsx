@@ -99,7 +99,7 @@ function Login({ done }) {
   </form></main>
 }
 
-function PaymentEditor({ item, change, remove }) {
+function PaymentEditor({ item, change, remove, listPrice }) {
   const cash = item.type === 'Contado'
   const smart = item.type === 'Crédito inteligente'
   return <div className="payment-editor">
@@ -111,7 +111,7 @@ function PaymentEditor({ item, change, remove }) {
       <button type="button" onClick={remove}>Eliminar</button>
     </div>
     <div className="form-grid">
-      <label>Precio oferta<input inputMode="numeric" value={item.price} onChange={e => change({ ...item, price: clean(e.target.value) })} /></label>
+      <label>{cash ? 'Precio contado · lista' : 'Precio campaña'}<input inputMode="numeric" value={cash ? listPrice : item.price} disabled={cash} onChange={e => change({ ...item, price: clean(e.target.value) })} /></label>
       {!cash && <>
         <label>Pie<input inputMode="numeric" value={item.down} onChange={e => change({ ...item, down: clean(e.target.value) })} /></label>
         <label>Plazo en meses<input inputMode="numeric" value={item.months} onChange={e => change({ ...item, months: clean(e.target.value) })} /></label>
@@ -125,7 +125,7 @@ function PaymentEditor({ item, change, remove }) {
       <label>Reserva<input inputMode="numeric" value={item.reserve} onChange={e => change({ ...item, reserve: clean(e.target.value) })} /></label>
       <label className="wide">Observación<input value={item.note} onChange={e => change({ ...item, note: e.target.value })} /></label>
     </div>
-    {!amount(item.price) && <small className="editor-help">La alternativa aparecerá cuando ingreses el precio oferta.</small>}
+    {!cash && !amount(item.price) && <small className="editor-help">La alternativa aparecerá cuando ingreses el precio de campaña.</small>}
   </div>
 }
 
@@ -159,12 +159,12 @@ export default function AdminQuote() {
   const version = useMemo(() => model.versions.find(item => item.code === versionCode) || model.versions[0], [model, versionCode])
   const advisorUser = getUsers().find(item => item.name.toLowerCase() === user.toLowerCase())
   const advisor = ADVISORS[advisorUser?.advisorKey] || ADVISORS.default
-  const offers = payments.filter(item => amount(item.price) > 0)
+  const listPrice = version.price
+  const offers = payments.map(item => item.type === 'Contado' ? { ...item, price: String(listPrice) } : item).filter(item => amount(item.price) > 0)
   const incomplete = offers.filter(item => item.type !== 'Contado' && (!amount(item.down) || !amount(item.months) || !amount(item.installment)))
   const versionFeatures = version.features?.length ? version.features : model.features
   const sourceImages = [...new Set([...(version.quoteImages || []), ...(model.quoteImages || []), model.img])].slice(0, 2)
   const displayImages = renderImages.length ? renderImages : sourceImages
-  const listPrice = version.price
   const tradeNet = amount(tradeValue) - amount(tradeDebt)
   const totalDown = Math.max(tradeNet, 0) + amount(extraDown)
   const hasTrade = Boolean(tradeDescription.trim() || amount(tradeValue) || amount(tradeDebt) || amount(extraDown))
@@ -288,9 +288,9 @@ export default function AdminQuote() {
             <label>Modelo<select value={slug} onChange={e => changeModel(e.target.value)}>{modelData.map(item => <option key={item.slug} value={item.slug}>Jetour {item.name}</option>)}</select></label>
             <label>Versión<select value={version.code} onChange={e => setVersionCode(e.target.value)}>{model.versions.map(item => <option key={item.code} value={item.code}>{item.name}</option>)}</select></label>
           </div>
-          <div className="model-summary"><img src={primaryImage} alt={`Jetour ${model.name} ${version.name}`} /><div><span>Precio lista julio 2026</span><strong>{money(listPrice)}</strong><small>{version.motor} · {version.hp} HP · {version.transmission} · {version.traction}</small><small>Ficha, equipamiento e imagen verificados para esta versión.</small><a className="official-source" href={version.source} target="_blank" rel="noreferrer">Revisar fuente oficial Jetour ↗</a></div></div>
+          <div className="model-summary"><img src={primaryImage} alt={`Jetour ${model.name} ${version.name}`} /><div><span>Precio lista contado · julio 2026</span><strong>{money(listPrice)}</strong><small>Compra Inteligente desde {money(version.smartPrice)}</small><small>{version.motor} · {version.hp} HP · {version.transmission} · {version.traction}</small><small>Ficha, equipamiento e imagen verificados para esta versión.</small><a className="official-source" href={version.source} target="_blank" rel="noreferrer">Revisar fuente oficial Jetour ↗</a></div></div>
         </div>
-        <div className="panel"><div className="panel-heading compact"><div><span>02</span><h2>Alternativas</h2></div></div><p className="panel-intro">Solo se muestran alternativas con precio oferta.</p><div className="quick-actions">{TYPES.map(type => <button key={type} type="button" onClick={() => setPayments(all => [...all, newPayment(type)])}>Agregar {type}</button>)}</div>{payments.map((item, index) => <PaymentEditor key={item.id} item={item} change={next => setPayments(all => all.map((row, i) => i === index ? next : row))} remove={() => setPayments(all => all.filter((_, i) => i !== index))} />)}</div>
+        <div className="panel"><div className="panel-heading compact"><div><span>02</span><h2>Alternativas</h2></div></div><p className="panel-intro">Contado usa siempre el precio lista sin bonos. Los créditos se precargan con la campaña de julio y permiten editar las condiciones aprobadas.</p><div className="quick-actions">{TYPES.map(type => <button key={type} type="button" onClick={() => { const row = newPayment(type); row.price = String(type === 'Contado' ? listPrice : type === 'Crédito inteligente' ? version.smartPrice : version.conventionalPrice); setPayments(all => [...all, row]) }}>Agregar {type}</button>)}</div>{payments.map((item, index) => <PaymentEditor key={item.id} item={item} listPrice={listPrice} change={next => setPayments(all => all.map((row, i) => i === index ? next : row))} remove={() => setPayments(all => all.filter((_, i) => i !== index))} />)}</div>
         <div className="panel"><div className="panel-heading compact"><div><span>03</span><h2>Retoma y pie</h2></div></div><div className="form-grid"><label className="wide">Vehículo en parte de pago<input value={tradeDescription} onChange={e => setTradeDescription(e.target.value)} /></label><label>Valor toma<input inputMode="numeric" value={tradeValue} onChange={e => setTradeValue(clean(e.target.value))} /></label><label>Deuda prepago<input inputMode="numeric" value={tradeDebt} onChange={e => setTradeDebt(clean(e.target.value))} /></label><label>Aporte adicional<input inputMode="numeric" value={extraDown} onChange={e => setExtraDown(clean(e.target.value))} /></label><div className="calculated-field"><span>{tradeNet >= 0 ? 'Saldo a favor' : 'Diferencia'}</span><strong>{money(Math.abs(tradeNet))}</strong></div><div className="calculated-field wide"><span>Pie disponible</span><strong>{money(totalDown)}</strong></div></div></div>
         <div className="panel"><div className="panel-heading compact"><div><span>04</span><h2>Mensaje y condiciones</h2></div></div><label>Beneficios<textarea rows="2" value={benefit} onChange={e => setBenefit(e.target.value)} /></label><label>Condición comercial<textarea rows="2" value={validity} onChange={e => setValidity(e.target.value)} /></label><label>Condiciones adicionales<textarea rows="3" value={conditions} onChange={e => setConditions(e.target.value)} /></label><div className="legal-lock"><strong>Protección comercial incluida</strong><span>El texto legal se incorpora automáticamente.</span></div></div>
         <div className="export-actions"><button className="admin-primary export" onClick={download} disabled={busy || !imageReady}>{busy ? 'Generando imagen…' : !imageReady ? 'Preparando imágenes…' : 'Descargar cotización PNG'}</button><button className="admin-secondary" onClick={copySummary}>Copiar resumen para WhatsApp</button><button className="admin-secondary whatsapp-action" onClick={openWhatsapp}>Abrir WhatsApp del cliente</button><button className="admin-secondary" onClick={openAdvisorWhatsapp}>Mi WhatsApp · {advisor.name}</button>{status && <div className="action-status">{status}</div>}</div>
