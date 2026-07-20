@@ -19,12 +19,12 @@
 @media(max-width:760px){.access-explainer,.tech-groups{grid-template-columns:1fr}.access-explainer,.full-tech{padding:38px 20px}.version-features{font-size:.78rem}}
 /* Home comercial 2026: vehículo protagonista + transición desierto/ciudad */
 .hero-showcase{min-height:100svh;isolation:isolate;grid-template-columns:minmax(0,46%) minmax(0,54%);padding-top:76px}
-.hero-showcase .hero-bg{z-index:-4;overflow:hidden;background:#0a0c0e}
+.hero-showcase .hero-bg{z-index:0;overflow:hidden;background:#0a0c0e}
 .hero-showcase .desert-side{width:70%;filter:saturate(.78) contrast(1.06);transform:scale(1.03);background-position:center 62%}
 .hero-showcase .city-side{width:62%;opacity:.72;filter:saturate(.62) contrast(1.08);background-position:center 55%}
 .hero-horizon{position:absolute;inset:auto 0 0;height:38%;background:linear-gradient(180deg,transparent,rgba(6,7,8,.3) 40%,#07090b 100%);z-index:2}
-.hero-showcase .hero-overlay{z-index:-2;background:linear-gradient(90deg,rgba(4,6,8,.94) 0%,rgba(4,6,8,.78) 33%,rgba(4,6,8,.2) 59%,rgba(4,6,8,.25) 100%),linear-gradient(180deg,rgba(3,5,7,.18),rgba(3,5,7,.1) 62%,rgba(3,5,7,.9) 100%)}
-.hero-showcase .hero-content{align-self:center;padding:80px 0 100px clamp(28px,5vw,86px);max-width:720px}
+.hero-showcase .hero-overlay{z-index:1;background:linear-gradient(90deg,rgba(4,6,8,.94) 0%,rgba(4,6,8,.78) 33%,rgba(4,6,8,.2) 59%,rgba(4,6,8,.25) 100%),linear-gradient(180deg,rgba(3,5,7,.18),rgba(3,5,7,.1) 62%,rgba(3,5,7,.9) 100%)}
+.hero-showcase .hero-content{z-index:4;align-self:center;padding:80px 0 100px clamp(28px,5vw,86px);max-width:720px}
 .hero-showcase .eyebrow{display:inline-flex;align-items:center;gap:10px;color:#f4cf73;margin-bottom:24px;font-size:.76rem}
 .hero-showcase .eyebrow:before{content:'';width:42px;height:1px;background:#e3b34d}
 .hero-showcase h1{font-size:clamp(3.5rem,6.2vw,7rem);max-width:700px;line-height:.91;text-wrap:balance;text-shadow:0 8px 36px rgba(0,0,0,.45)}
@@ -33,7 +33,7 @@
 .hero-trust{display:flex;gap:9px 20px;flex-wrap:wrap;margin-top:26px;color:#d6d9dc;font-size:.72rem;font-weight:700}
 .hero-trust span{display:flex;align-items:center;gap:6px}
 .hero-trust span::first-letter{color:#e0b34e}
-.hero-vehicle{position:absolute;z-index:1;right:-1.5vw;bottom:7vh;width:min(62vw,1050px);height:min(74vh,760px);display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+.hero-vehicle{position:absolute;z-index:3;right:2vw;bottom:7vh;width:min(54vw,820px);height:min(68vh,650px);display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
 .hero-vehicle img{position:relative;z-index:3;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 36px 34px rgba(0,0,0,.82));transform:translateY(1.4%)}
 .vehicle-glow{position:absolute;z-index:1;left:20%;right:3%;bottom:12%;height:48%;border-radius:50%;background:radial-gradient(ellipse,rgba(230,183,77,.3),rgba(132,83,26,.1) 42%,transparent 72%);filter:blur(14px)}
 .vehicle-ground{position:absolute;z-index:2;left:14%;right:4%;bottom:1.5%;height:17%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.92),rgba(0,0,0,.38) 48%,transparent 72%);filter:blur(8px)}
